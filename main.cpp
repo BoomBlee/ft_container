@@ -3,9 +3,9 @@
 
 int	main() {
 	std::list<int> fds;
-	list<int>::iterator dsa;
-	list<int>::iterator dsa1;
+	// list<int>::iterator dsa;
+	// list<int>::iterator dsa1;
 	// std::list<int>::iterator::
-	dsa == dsa1;
+	// dsa == dsa1;
 	return 0;
 }
