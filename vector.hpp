@@ -21,10 +21,21 @@ namespace ft {
 		typedef ptrdiff_t									difference_type;
 		typedef size_t										size_type;
 
-		vector (const allocator_type& alloc = allocator_type())
+		explicit vector (const allocator_type& alloc = allocator_type())
 		 : _size(0), _capacity(0), _alloc(alloc), _array(nullptr) {};
 
-		~vector() {};
+		explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) : _alloc(alloc) {
+			// insert(begin(), n, val);
+		}
+
+		template <class InputIterator>
+		vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()) : _alloc(alloc) {
+			// insert(begin(), first, last);
+		}
+
+		vector (const vector& x);
+
+		~vector() {clear();_alloc.deallocate(_array, _capacity);};
 		vector& operator=(const vector& obj){};
 
 	/* Iterators */
@@ -40,10 +51,22 @@ namespace ft {
 	/* Capacity */
 		size_t size() const {return _size;}
 		size_t max_size() {return _alloc.max_size();}
-		void resize() {}
+		void resize(size_type n, value_type val = value_type()) {
+			
+		}
 		size_t capacity() {return _capacity;}
 		bool empty() const {return _size == 0;}
-		// reserve() {}
+		void reserve (size_type n) {
+			if (n <= _capacity)
+				return ;
+			size_type newCap = n;
+			pointer newARR = _alloc.allocate(newCap);
+			for (size_type i = 0; i < _size; ++i)
+				_alloc.construct(newARR + i, _array[i]);
+			_alloc.deallocate(_array, _size);
+			_capacity = newCap;
+			_array = newARR;
+		}
 
 	/* Element access */
 		value_type& operator[](const size_t& index) const {return _array[index];}
@@ -81,16 +104,21 @@ namespace ft {
 				++_size;
 			}
 		}
+
 		void pop_back() {
 			_alloc.destroy(&this->back());
 			--_size;
 		}
 
 		// single element (1)
-		iterator insert (iterator position, const value_type& val) {position.p=val;return position;};
+		iterator insert (iterator position, const value_type& val) {
+			
+		}
 
 		// fill (2)
-    	void insert (iterator position, size_type n, const value_type& val);
+    	void insert (iterator position, size_type n, const value_type& val) {
+			
+		}
 
 		// range (3)
 		template <class InputIterator>
@@ -104,7 +132,11 @@ namespace ft {
 
 		void swap(vector& x) {}
 
-		void clear() {}
+		void clear() {
+			for(size_type i=0; i < _size; ++i)
+				_alloc.destroy(_array + i);
+			_size = 0;
+		}
 
 	
 
@@ -156,3 +188,14 @@ namespace ft {
 	template <class T, class Alloc>
 	bool operator>= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {return !(lhs<rhs);}
 }
+
+// resize
+// assign
+// insert
+// erase
+// swap
+// swap
+// constructor
+// exception
+// operator=
+// reverse_iterator
