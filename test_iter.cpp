@@ -151,4 +151,94 @@ int main() {
 	// ft::vector<int>::iterator itSwap = vectSwap.begin();
 	// for (ft::vector<int>::iterator ite = vectSwap.end(); itSwap != ite; ++itSwap)
 	// 	cout << *itSwap << endl;
+
+	ft::vector<int> vect_copy;
+	vect_copy = vec2;
+	// ft::vector<int>::iterator itc = vec2.begin();
+	// for (ft::vector<int>::iterator ite = vec2.end(); itc != ite; ++itc)
+	// 	cout << "vec2 " << *itc << endl;
+	// itc = vect_copy.begin();
+	// for (ft::vector<int>::iterator ite = vect_copy.end(); itc != ite; ++itc)
+	// 	cout << "vcpy " << *itc << endl;
+	cout << "vcpy " << vect_copy.size() << endl;
+	cout << "vec2 " << vec2.size() << endl;
+	cout << "vcpy " << vect_copy.capacity() << endl;
+	cout << "vec2 " << vec2.capacity() << endl << endl;
+
+	// vector<int> vec_copy;
+	vector<int> vec3;
+
+	for (int i = 0; i < 100; ++i) {
+		vec3.push_back(i);
+	}
+
+	// vec_copy = vec3;
+	vector<int> vec_copy(vec3);
+	cout << "vcpy " << vec_copy.size() << endl;
+	cout << "vec3 " << vec3.size() << endl;
+	cout << "vcpy " << vec_copy.capacity() << endl;
+	cout << "vec3 " << vec3.capacity() << endl;
+	// vector<int>::iterator itc = vec_copy.begin();
+	// for (vector<int>::iterator ite = vec_copy.end(); itc != ite; ++itc)
+	// 	cout << "vcpy " << *itc << endl;
+
+	vector<int> test;
+	for (size_t i=0; i < 5; ++i)
+		test.push_back(i);
+	test.assign(10, 5);
+	vector<int>::iterator t = test.begin();
+	// for(vector<int>::iterator te = test.end(); t != te; ++t)
+	// 	cout << "t " << *t << endl;
+	cout << "t size " << test.size() << endl;
+	cout << "t cap " << test.capacity() << endl;
+	for (size_t i=0; i < 100; ++i)
+		test.push_back(i);
+	cout << "t size " << test.size() << endl;
+	cout << "t cap " << test.capacity() << endl;
+
+	vector<int> test1;
+	for (size_t i=0; i < 5; ++i)
+		test1.push_back(i);
+	test1.assign(10, 5);
+	vector<int>::iterator t1 = test1.begin();
+	// for(vector<int>::iterator te = test1.end(); t1 != te; ++t1)
+	// 	cout << "t " << *t1 << endl;
+	cout << "t1 size " << test1.size() << endl;
+	cout << "t1 cap " << test1.capacity() << endl;
+	for (size_t i=0; i < 100; ++i)
+		test1.push_back(i);
+	cout << "t1 size " << test1.size() << endl;
+	cout << "t1 cap " << test1.capacity() << endl;
+
+	cout << "--------insert--------" << endl;
+	vector<int> insert;
+	insert.insert(insert.begin(),10);
+	insert.insert(insert.begin(),20);
+	insert.insert(insert.begin(),30);
+	insert.insert(insert.begin(),40);
+	insert.insert(insert.begin(),50);
+	vector<int>::iterator inst = insert.begin();
+	for(vector<int>::iterator te = insert.end(); inst != te; ++inst)
+		cout << "t " << *inst << endl;
+	cout << "inst size " << insert.size() << endl;
+	cout << "inst cap " << insert.capacity() << endl;
+
+	cout << "--------my insert--------" << endl;
+	ft::vector<int> ins1;
+	ins1.insert(ins1.begin(),10);
+	ins1.insert(ins1.begin(),20);
+	ins1.insert(ins1.begin(),30);
+	ins1.insert(ins1.begin(),40);
+	ins1.insert(ins1.begin(),50);
+	ft::vector<int>::iterator inst1 = ins1.begin();
+	for(ft::vector<int>::iterator te1 = ins1.end(); inst1 != te1; ++inst1)
+		cout << "t1 " << *inst1 << endl;
+	cout << "inst1 size " << ins1.size() << endl;
+	cout << "inst1 cap " << ins1.capacity() << endl;
+
 }
+
+// check iter in function
+// test swap
+// assign(iter)
+// insert
