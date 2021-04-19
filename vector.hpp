@@ -21,16 +21,25 @@ namespace ft {
 		typedef ptrdiff_t									difference_type;
 		typedef size_t										size_type;
 
+	private:
+		allocator_type	_alloc;
+		pointer			_array;
+		size_t			_size;
+		size_t			_capacity;
+
+	public:
 		explicit vector (const allocator_type& alloc = allocator_type())
 		 : _size(0), _capacity(0), _alloc(alloc), _array(nullptr) {};
 
-		explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) : _alloc(alloc) {
-			// insert(begin(), n, val);
+		explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) : _alloc(alloc), _capacity(n) {
+			_array = _alloc.allocate(n);
+			insert(begin(), n, val);
 		}
 
 		template <class InputIterator>
 		vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()) : _alloc(alloc) {
-			// insert(begin(), first, last);
+			_array = _alloc.allocate(1);
+			insert(begin(), first, last);
 		}
 
 		vector (const vector& x) {this=x;return this;};
@@ -61,7 +70,15 @@ namespace ft {
 		size_t size() const {return _size;}
 		size_t max_size() {return _alloc.max_size();}
 		void resize(size_type n, value_type val = value_type()) {
-			
+			if (n > max_size())
+				throw std::out_of_range("vector");
+			else if (n < _size) {
+				for (size_type i = 0; n + i < _size; i++)
+					_alloc.destroy(_array + n + i);
+				_size = n;
+			}
+			else
+				insert(end(), _size - n, val);
 		}
 		size_t capacity() {return _capacity;}
 		bool empty() const {return _size == 0;}
@@ -153,7 +170,7 @@ namespace ft {
 		// fill (2)
     	void insert (iterator position, size_type n, const value_type& val) {
 			size_type i=0;
-			for (; _array + i != *position; ++i);
+			for (; _array + i != &(*position); ++i);
 
 			size_type newCap = _capacity;
 			while (_size + n < newCap)
@@ -173,7 +190,7 @@ namespace ft {
 		template <class InputIterator>
 		void insert (iterator position, InputIterator first, InputIterator last) {
 			size_type i=0;
-			for (; _array + i != *position; ++i);
+			for (; _array + i != &(*position); ++i);
 
 			size_type n = 0;
 			for (InputIterator it=first; it != last; ++it)
@@ -198,7 +215,7 @@ namespace ft {
 
 		iterator erase (iterator position) {
 			size_type k=0;
-			for (; _array + k != *position; ++k);
+			for (; _array + k != &(*position); ++k);
 
 			for (size_type i = k; _array + i != _array + _size; ++i) {
 				_alloc.construct(_array + i, _array[i + 1]);
@@ -208,7 +225,20 @@ namespace ft {
 			return (iterator(_array + k));
 		}
 
-		iterator erase (iterator first, iterator last);
+		iterator erase (iterator first, iterator last) {
+			size_type k = 0;
+			size_type i = 0;
+
+			for (; _array + i != &(*first); ++i);
+
+			for (iterator begin = first; begin != last; ++begin, ++k);
+
+			for (iterator begin = first; begin != last; ++begin, ++i, --_size) {
+				_alloc.construct(_array + i, _array + k);
+				_alloc.destroy(_array + i + k);
+			}
+			return (iterator(_array + first));
+		}
 
 
 		void swap(vector& x) {
@@ -229,19 +259,13 @@ namespace ft {
 		}
 
 		void clear() {
-			for(size_type i=0; i < _size; ++i)
-				_alloc.destroy(_array + i);
-			_size = 0;
+			if (_array != nullptr) {
+				for(size_type i=0; i < _size; ++i)
+					_alloc.destroy(_array + i);
+				_size = 0;	
+			}
 		}
 
-	
-
-
-	private:
-		allocator_type	_alloc;
-		pointer			_array;
-		size_t			_size;
-		size_t			_capacity;
 	};
 
 	/* Non-member function overloads */
@@ -286,12 +310,9 @@ namespace ft {
 
 	template <class T, class Alloc>
 	void swap (vector<T,Alloc>& x, vector<T,Alloc>& y) {x.swap(y);}
+	
 }
 
-// resize
-// erase
-// constructor
 // exception
 // reverse_iterator
-// check iter in function
-// vector <bool>
+// check iter in function (return)

@@ -218,6 +218,9 @@ int main() {
 	insert.insert(insert.begin(),40);
 	insert.insert(insert.begin(),50);
 	vector<int>::iterator inst = insert.begin();
+	vector<int>::iterator inst0 = insert.begin();
+	insert.insert(++inst0,60);
+	insert.erase(--inst0);
 	for(vector<int>::iterator te = insert.end(); inst != te; ++inst)
 		cout << "t " << *inst << endl;
 	cout << "inst size " << insert.size() << endl;
@@ -231,14 +234,86 @@ int main() {
 	ins1.insert(ins1.begin(),40);
 	ins1.insert(ins1.begin(),50);
 	ft::vector<int>::iterator inst1 = ins1.begin();
+
+	ft::vector<int>::iterator inst2 = ins1.begin();
+	ins1.insert(++inst2,60);
+	ins1.erase(--inst2);
 	for(ft::vector<int>::iterator te1 = ins1.end(); inst1 != te1; ++inst1)
 		cout << "t1 " << *inst1 << endl;
 	cout << "inst1 size " << ins1.size() << endl;
 	cout << "inst1 cap " << ins1.capacity() << endl;
 
+
+	cout << "--------resize--------" << endl;
+	vector<int> vect_resize;
+	for (size_t i=0; i < 6; ++i)
+		vect_resize.push_back(i);
+	
+	vector<int>::iterator it_resize = vect_resize.begin();
+	for (vector<int>::iterator ite = vect_resize.end(); it_resize != ite; ++it_resize)
+		cout << "rs " << *it_resize << endl;
+	vect_resize.resize(10, 99);
+
+	it_resize = vect_resize.begin();
+	for (vector<int>::iterator ite = vect_resize.end(); it_resize != ite; ++it_resize)
+		cout << "rss " << *it_resize << endl;
+	// cout << "vect_resize [4] " << vect_resize[4] << endl;
+	cout << "vect_resize size " << vect_resize.size() << endl;
+	cout << "vect_resize cap " << vect_resize.capacity() << endl;
+
+		cout << "--------my_resize--------" << endl;
+	vector<int> my_vect_resize;
+	for (size_t i=0; i < 6; ++i)
+		my_vect_resize.push_back(i);
+	
+	vector<int>::iterator my_it_resize = my_vect_resize.begin();
+	for (vector<int>::iterator ite = my_vect_resize.end(); my_it_resize != ite; ++my_it_resize)
+		cout << "rs " << *my_it_resize << endl;
+	my_vect_resize.resize(10, 99);
+
+	my_it_resize = my_vect_resize.begin();
+	for (vector<int>::iterator ite = my_vect_resize.end(); my_it_resize != ite; ++my_it_resize)
+		cout << "rss " << *my_it_resize << endl;
+	// cout << "my_vect_resize [4] " << my_vect_resize[4] << endl;
+	cout << "my_vect_resize size " << my_vect_resize.size() << endl;
+	cout << "my_vect_resize cap " << my_vect_resize.capacity() << endl;
+
+
+		cout << "--------construstor--------" << endl;
+	vector<int> vect_constr(0,5);
+	vector<int>::iterator it_vc = vect_constr.begin();
+	for(vector<int>::iterator ite = vect_constr.end(); it_vc != ite; ++it_vc)
+		cout << "vs " << *it_vc << endl;
+	cout << "vc size " << vect_constr.size() << endl;
+	cout << "vc cap " << vect_constr.capacity() << endl;
+	
+	vect_constr.push_back(10);
+
+	it_vc = vect_constr.begin();
+	for(vector<int>::iterator ite = vect_constr.end(); it_vc != ite; ++it_vc)
+		cout << "vs " << *it_vc << endl;	
+	cout << "vc size " << vect_constr.size() << endl;
+	cout << "vc cap " << vect_constr.capacity() << endl;
+
+			cout << "--------my_construstor--------" << endl;
+	vector<int> my_vect_constr(0,5);
+	vector<int>::iterator it_vc_my = my_vect_constr.begin();
+	for(vector<int>::iterator ite = my_vect_constr.end(); it_vc_my != ite; ++it_vc_my)
+		cout << "vs " << *it_vc_my << endl;
+	cout << "vc size " << my_vect_constr.size() << endl;
+	cout << "vc cap " << my_vect_constr.capacity() << endl;
+	
+	my_vect_constr.push_back(10);
+
+	it_vc_my = my_vect_constr.begin();
+	for(vector<int>::iterator ite = my_vect_constr.end(); it_vc_my != ite; ++it_vc_my)
+		cout << "vs " << *it_vc_my << endl;	
+	cout << "vc size " << my_vect_constr.size() << endl;
+	cout << "vc cap " << my_vect_constr.capacity() << endl;
 }
 
 // check iter in function
 // test swap
 // assign(iter)
 // insert
+// erase
