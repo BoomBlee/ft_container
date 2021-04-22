@@ -310,6 +310,8 @@ int main() {
 		cout << "vs " << *it_vc_my << endl;	
 	cout << "vc size " << my_vect_constr.size() << endl;
 	cout << "vc cap " << my_vect_constr.capacity() << endl;
+
+	ft::vector<int> ass(ins1);
 }
 
 // check iter in function

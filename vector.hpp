@@ -42,7 +42,7 @@ namespace ft {
 			insert(begin(), first, last);
 		}
 
-		vector (const vector& x) {this=x;return this;};
+		vector (const vector& x) {*this=x;};
 
 		~vector() {clear();_alloc.deallocate(_array, _capacity);};
 
@@ -316,3 +316,4 @@ namespace ft {
 // exception
 // reverse_iterator
 // check iter in function (return)
+// iterator constr copy

@@ -3,6 +3,14 @@
 #include <iostream>
 #include <iterator>
 
+template<typename T>
+struct Node {
+public:
+	T*			value;
+	Node*		next;
+	Node*		prev;
+};
+
 template <class Category, class T, class Distance = ptrdiff_t, class Pointer = T*, class Reference = T&>
 struct iterator {
 	typedef T			value_type;
@@ -40,6 +48,26 @@ namespace ft {
 		T& operator->() const {return *p;}
 	};
 	
+	template<typename T>
+	class iter_list : iterator<std::bidirectional_iterator_tag, T> {
+	private:
+	public:
+		Node<T>*	_p;
+		iter_list() {};
+		iter_list(Node<T>* x) : _p(x) {}
+		iter_list(const iter_list& obj) : _p(obj._p) {}
+		~iter_list() {};
+		bool operator==(const iter_list<T> &obj) const {return this->_p==obj._p;}
+		bool operator!=(const iter_list<T> &obj) const {return this->_p!=obj._p;}
+		iter_list& operator++() {_p=_p->next;return *this;}
+		iter_list operator++(int) {iter_list<T> tmp(*this); _p=_p->next; return tmp;}
+		iter_list& operator--() {_p=_p->prev;return *this;}
+		iter_list operator--(int) {iter_list<T> tmp(*this); _p=_p->prev; return tmp;}
+		T& operator*() const {return *_p->value;}
+		T& operator->() const {return _p->value;}
+		iter_list& operator=(const Node<T>& element) {_p=element;return *this;}
+	};
+
 	// template<class Iterator>
 	// class reverse_iterator : reverse_iterator<iterator>
 	// {

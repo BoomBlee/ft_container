@@ -1,4 +1,0 @@
-
-
-vector:
-	@echo vector
