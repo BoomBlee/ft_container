@@ -127,10 +127,13 @@ int main() {
 	// cout << "my_pop " << *my_list3.begin() << endl;
 	my_list3.resize(5,654);
 	my_list3.resize(10);
-	my_list3.reverse();
+	// my_it = my_list3.begin();
+	// for (ft::list<int>::iterator ite = my_list3.end(); my_it!=ite; ++my_it)
+	// 	cout << "sort " << *my_it << endl;
 	my_list3.swap(my_list2);
-	my_it = my_list3.begin();
-	for (ft::list<int>::iterator ite = my_list3.end(); my_it!=ite; ++my_it)
-		cout << "sort " << *my_it << endl;
+	// my_list2.reverse();
+	my_it = my_list2.begin();
+	for (ft::list<int>::iterator ite = my_list2.end(); my_it!=ite; ++my_it)
+		cout << "swap " << *my_it << endl;
 
 }

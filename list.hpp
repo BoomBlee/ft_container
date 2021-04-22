@@ -48,7 +48,6 @@ namespace ft{
 			_alloc.destroy(node->value);
 			_alloc.deallocate(node->value, 1);
 			_node_alloc.deallocate(node, 1);
-			--_size;
 		}
 
 		Node<T>* _create_node(const value_type& val) {
@@ -63,13 +62,11 @@ namespace ft{
 			return node;
 		}
 
-		void _swap_node(Node<T>* x, Node<T>* y) {
-			Node<T>* tmp;
-			tmp = x;
-			x = y;
-			y = tmp;
-			
-		}
+		// void _swap_node(Node<T>& x, Node<T>& y) {
+		// 	Node<T>& tmp = x;
+		// 	x = y;
+		// 	y = tmp;
+		// }
 
 	public:
 		explicit list (const allocator_type& alloc = allocator_type()) : _alloc(alloc), _size(0) {
@@ -91,9 +88,9 @@ namespace ft{
 		list (const list& x) {*this=x;}
 
 		~list() {
-			// while (_size)
-			// 	pop_back();
-			// _death_node(_list);
+			while (_size)
+				pop_back();
+			_death_node(_list);
 		}
 
 		list& operator= (const list& x) {
@@ -229,6 +226,9 @@ namespace ft{
 			Node<T>* tmp = _list;
 			_list = x._list;
 			x._list = tmp;
+			size_type tmp_size = this->_size;
+			this->_size = x._size;
+			x._size = tmp_size;
 		}
 
 		void resize (size_type n, value_type val = value_type()) {
@@ -319,9 +319,19 @@ namespace ft{
 
 
 		void reverse() {
-			_swap_node(_list->next, _list->prev);
-			for (Node<T>* list=_list->prev; list != _list; list = list->prev)
-				_swap_node(_list->next, _list->prev);
+			Node<T>* tmp = _list->next;
+			_list->next = _list->prev;
+			_list->prev = tmp;
+			// _swap_node(_list->next, _list->prev);
+			for (Node<T>* list=_list->prev; list != _list; list = list->prev) {
+				tmp = _list->next;
+				_list->next = _list->prev;
+				_list->prev = tmp;
+			}
+				// _swap_node(_list->next, _list->prev);
+				// tmp = _list->next;
+				// _list->next = _list->prev;
+				// _list->prev = tmp;
 		}
 
 	};
