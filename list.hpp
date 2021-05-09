@@ -1,11 +1,9 @@
 #pragma once
 
-#include <iostream>
-#include <iterator>
 #include "iterator.hpp"
 
 
-namespace ft{
+namespace ft {
 
 
 	// template<typename T>
@@ -213,6 +211,7 @@ namespace ft{
 			node->prev->next = node->next;
 			node->next->prev = node->prev;
 			_death_node(node);
+			--_size;
 			return position;
 		}
 
@@ -285,6 +284,96 @@ namespace ft{
 					erase(it);
 		}
 
+		void unique() {
+			iterator first = begin();
+			iterator last = end();
+			if (first == last)
+				return ;
+			 iterator next = first;
+      		while (++next != last) {
+				if (*first == *next) {
+					erase(next);
+				}
+				else
+					first = next;
+				next = first;
+			}
+		}
+
+		template <class BinaryPredicate>
+		void unique (BinaryPredicate binary_pred) {
+			iterator first = begin();
+			iterator last = end();
+			if (first == last)
+				return ;
+			 iterator next = first;
+      		while (++next != last) {
+				if (binary_pred(*first,*next)) {
+					erase(next);
+				}
+				else
+					first = next;
+				next = first;
+			}
+		}
+
+		void merge (list& x) {
+			iterator first1 = begin();
+			iterator last1 = end();
+			iterator first2 = x.begin();
+			iterator last2 = x.end();
+
+			while (first1 != last1 && first2 != last2)
+				if (*first2 < *first1)
+				{
+					// iterator __next = first2;
+					// _M_transfer(first1, first2, ++__next); // arg1-куда,arg2-от куда,arg3-до куда
+					Node<T>*		node = first2._p;
+
+					Node<T>*	tmp = first1._p;
+
+					// node->prev = tmp->prev;
+					// tmp->prev->next = node;
+					// node->next = tmp;
+					// tmp->prev = node;
+
+
+					node->prev = tmp;
+					node->next = tmp->next;
+					tmp->next = node;
+					// tmp->prev = node;
+
+					++_size;
+
+					++first2;
+					// std::cout << "f2 " << *first2 << " _size " << _size << std::endl;
+					// first2 = __next;
+				}
+				else {
+					// std::cout << "f1 " << *first2 << " _size " << _size << std::endl;
+					++first1;
+
+				}
+			if (first2 != last2) {
+				// std::cout << "while f2 " << *first2 << " _size " << _size << std::endl;
+				Node<T>*		node = first2._p;
+
+				Node<T>*	tmp = first1._p;
+
+				node->prev = tmp;
+				node->next = tmp->next;
+				tmp->next = node;
+				// tmp->prev = node;
+
+				++_size;
+
+				++first2;
+			}
+				// _M_transfer(last1, first2, last2);
+			this->_size += x._size;
+			x._size = 0;
+		}
+
 		void sort() {
 			Node<T>* list = _list->next;
 			Node<T>* tmp_node;
@@ -320,21 +409,21 @@ namespace ft{
 
 		void reverse() {
 			Node<T>* tmp = _list->next;
+			Node<T>* list=_list->next;
+
 			_list->next = _list->prev;
 			_list->prev = tmp;
-			// _swap_node(_list->next, _list->prev);
-			for (Node<T>* list=_list->prev; list != _list; list = list->prev) {
-				tmp = _list->next;
-				_list->next = _list->prev;
-				_list->prev = tmp;
+
+			for (; list != _list; list = tmp) {
+				tmp = list->next;
+				list->next = list->prev;
+				list->prev = tmp;
 			}
-				// _swap_node(_list->next, _list->prev);
-				// tmp = _list->next;
-				// _list->next = _list->prev;
-				// _list->prev = tmp;
 		}
 
 	};
 }
 
 // insert (3)
+// merge
+// return

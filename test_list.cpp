@@ -103,7 +103,7 @@ int main() {
 	my_list2.push_back(2);
 	my_list2.push_front(5);
 	cout << "my_a size " << my_list2.size() << endl;
-	my_list2.assign(2, 200);
+	my_list2.assign(5, 400);
 	cout << "my_b size " << my_list2.size() << endl;
 	my_it = my_list2.begin();
 	for (ft::list<int>::iterator ite = my_list2.end(); my_it!=ite; ++my_it)
@@ -120,9 +120,20 @@ int main() {
 	// my_list3.clear();
 	my_list3.insert(my_list3.begin(), 2, 100);
 	// my_list3.push_back(976);
-	// my_list3.push_back(6);
-	// my_list3.push_back(98);
-	// my_list3.push_back(57);
+	my_list3.resize(10);
+	// my_it = my_list3.begin();
+	// for (ft::list<int>::iterator ite = my_list3.end(); my_it!=ite; ++my_it)
+	// 	cout << "sort " << *my_it << endl;
+	my_list3.swap(my_list2);
+	cout << "_size " << my_list3.size() << endl;
+	my_list3.push_front(256);
+	my_list3.push_back(76);
+	my_list3.sort();
+	// my_list2.reverse();
+	// my_list3.merge(my_list2);
+	my_it = my_list3.begin();
+	for (ft::list<int>::iterator ite = my_list3.end(); my_it!=ite; ++my_it)
+		cout << "swap " << *my_it << endl;
 	// my_list3.sort();
 	// cout << "my_pop " << *my_list3.begin() << endl;
 	my_list3.resize(5,654);
@@ -131,9 +142,23 @@ int main() {
 	// for (ft::list<int>::iterator ite = my_list3.end(); my_it!=ite; ++my_it)
 	// 	cout << "sort " << *my_it << endl;
 	my_list3.swap(my_list2);
-	// my_list2.reverse();
+	cout << "_size " << my_list3.size() << endl;
+	my_list3.push_front(256);
+	my_list3.push_back(76);
+	my_list3.sort();
+	my_list2.sort();
+	my_list2.reverse();
+	// my_it = my_list3.begin();
+	// for (ft::list<int>::iterator ite = my_list3.end(); my_it!=ite; ++my_it)
+	// 	cout << "list3 " << *my_it << endl;
+
+	cout << "-----reverse-----" << endl;
+
 	my_it = my_list2.begin();
 	for (ft::list<int>::iterator ite = my_list2.end(); my_it!=ite; ++my_it)
-		cout << "swap " << *my_it << endl;
+		cout << "list2 " << *my_it << endl;
+
+	// my_list3.merge(my_list2);
+	cout << "-----reverse-----" << endl;
 
 }

@@ -11,6 +11,15 @@ public:
 	Node*		prev;
 };
 
+template<typename T>
+struct node_map {
+public:
+	T*				value;
+	node_map*		parent;
+	node_map*		left;
+	node_map*		right;
+};
+
 template <class Category, class T, class Distance = ptrdiff_t, class Pointer = T*, class Reference = T&>
 struct iterator {
 	typedef T			value_type;
@@ -23,7 +32,8 @@ struct iterator {
 namespace ft {
 
 	template<typename T>
-	class iter : iterator<std::random_access_iterator_tag, T> {
+	// class iter : iterator<std::random_access_iterator_tag, T> {
+	class iter {
 	private:
 		T *p;
 	public:
@@ -49,8 +59,8 @@ namespace ft {
 	};
 	
 	template<typename T>
-	class iter_list : iterator<std::bidirectional_iterator_tag, T> {
-	private:
+	// class iter_list : iterator<std::bidirectional_iterator_tag, T> {
+	class iter_list {
 	public:
 		Node<T>*	_p;
 		iter_list() {};

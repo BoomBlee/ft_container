@@ -64,6 +64,13 @@
 		"typeinfo": "cpp",
 		"deque": "cpp",
 		"__memory": "cpp",
-		"__functional_03": "cpp"
+		"__functional_03": "cpp",
+		"*.tcc": "cpp",
+		"numeric": "cpp",
+		"clocale": "cpp",
+		"map": "cpp",
+		"random": "cpp",
+		"fstream": "cpp",
+		"cinttypes": "cpp"
 	}
 }
