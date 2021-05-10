@@ -85,7 +85,7 @@ template < class Key,											// map::key_type
 
 		if(empty()) {
 			_create_first_node(val);
-			pair = std::make_pair(_tree._root, true);
+			// pair = std::make_pair(_tree._root, true);
 		}
 		else {
 

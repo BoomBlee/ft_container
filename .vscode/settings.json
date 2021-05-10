@@ -72,5 +72,8 @@
 		"random": "cpp",
 		"fstream": "cpp",
 		"cinttypes": "cpp"
-	}
+	},
+	"lldb.displayFormat": "auto",
+	"lldb.showDisassembly": "always",
+	"lldb.dereferencePointers": false
 }

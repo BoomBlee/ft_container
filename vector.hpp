@@ -16,9 +16,9 @@ namespace ft {
 		typedef typename allocator_type::const_pointer		const_pointer;
 		typedef typename ft::iter<value_type>				iterator;
 		typedef typename ft::iter<const value_type>			const_iterator;
-		// typedef typename reverse_iterator<iterator>			reverse_iterator; //
-		// typedef typename reverse_iterator<const_iterator>	const_reverse_iterator; //
-		typedef ptrdiff_t									difference_type;
+		typedef typename ft::reverse_iter<value_type>			reverse_iterator;
+		typedef typename ft::reverse_iter<const value_type>	const_reverse_iterator;
+		typedef std::ptrdiff_t								difference_type;
 		typedef size_t										size_type;
 
 	private:
@@ -29,16 +29,20 @@ namespace ft {
 
 	public:
 		explicit vector (const allocator_type& alloc = allocator_type())
-		 : _size(0), _capacity(0), _alloc(alloc), _array(nullptr) {};
+		 : _size(0), _capacity(0), _alloc(alloc), _array(NULL) {};
 
-		explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) : _alloc(alloc), _capacity(n) {
+		explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) : _alloc(alloc), _capacity(n), _size(0) {
 			_array = _alloc.allocate(n);
 			insert(begin(), n, val);
 		}
 
 		template <class InputIterator>
-		vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()) : _alloc(alloc) {
-			_array = _alloc.allocate(1);
+		vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(), char (*)[sizeof(*first)] = NULL) : _alloc(alloc), _size(0) {
+			size_type n = 0;
+			for (InputIterator it=first; it != last; ++it)
+				++n;
+			_array = _alloc.allocate(n);
+			_capacity = n;
 			insert(begin(), first, last);
 		}
 
@@ -61,10 +65,10 @@ namespace ft {
 		const_iterator begin() const {return _array;}
 		iterator end() {return _array + _size;}
 		const_iterator end() const {return _array + _size;}
-		// reverse_iterator rbegin() {return ;} // ?
-		// const_reverse_iterator rbegin() {return ;}
-		// reverse_iterator rend() {return ;}
-		// const_reverse_iterator rend() {return ;}
+		reverse_iterator rbegin() {return _array + _size - 1;}
+		const_reverse_iterator rbegin() const {return _array + _size - 1;}
+		reverse_iterator rend() {return  _array - 1;}
+		const_reverse_iterator rend() const {return  _array - 1;}
 
 	/* Capacity */
 		size_t size() const {return _size;}
@@ -72,13 +76,15 @@ namespace ft {
 		void resize(size_type n, value_type val = value_type()) {
 			if (n > max_size())
 				throw std::out_of_range("vector");
+			else if (!n)
+				return ;
 			else if (n < _size) {
 				for (size_type i = 0; n + i < _size; i++)
 					_alloc.destroy(_array + n + i);
 				_size = n;
 			}
 			else
-				insert(end(), _size - n, val);
+				insert(end(), n - _size, val);
 		}
 		size_t capacity() {return _capacity;}
 		bool empty() const {return _size == 0;}
@@ -108,7 +114,7 @@ namespace ft {
 
 		// range (1)
 		template <class InputIterator>
-		void assign (InputIterator first, InputIterator last) {
+		void assign (InputIterator first, InputIterator last, char (*)[sizeof(*first)] = NULL) {
 			clear();
 			for (; first != last; ++first)
 				push_back(*first);
@@ -172,25 +178,27 @@ namespace ft {
 			size_type i=0;
 			for (; _array + i != &(*position); ++i);
 
-			size_type newCap = _capacity;
-			while (_size + n < newCap)
-				newCap *= 2;
+			size_type newCap = _capacity ? _capacity : n;
+			while (_size + n > newCap)
+				newCap = 2 * _size;
 
 			reserve(newCap);
-			for (size_type k = 0; _array + i != _array + _size - k; ++k) {
-				_alloc.construct(_array + _size + n - k, _array[_size - k - 1]);
-				_alloc.destroy(_array + _size - k - 1);
+			if (_size) {
+				for (size_type k = 0; _array + i != _array + _size - k; ++k) {
+					_alloc.construct(_array + _size + n - k, _array[_size - k - 1]);
+					_alloc.destroy(_array + _size - k - 1);
+				}
 			}
-			while (n--)
-				_alloc.construct(_array + i + n - 1, val);// check -1
 			_size += n;
+			while (n--)
+				_alloc.construct(_array + i + n, val);// check -1
 		}
 
 		// range (3)
 		template <class InputIterator>
-		void insert (iterator position, InputIterator first, InputIterator last) {
-			size_type i=0;
-			for (; _array + i != &(*position); ++i);
+		void insert (iterator position, InputIterator first, InputIterator last, char (*)[sizeof(*first)] = NULL) {
+			size_type pos=0;
+			for (; _array + pos != &(*position); ++pos);
 
 			size_type n = 0;
 			for (InputIterator it=first; it != last; ++it)
@@ -201,15 +209,17 @@ namespace ft {
 				newCap *= 2;
 
 			reserve(newCap);
-			for (size_type k = 0; _array + i != _array + _size - k; ++k) {
-				_alloc.construct(_array + _size + n - k, _array[_size - k - 1]);
+			for (size_type k = 0; _array + pos != _array + _size - k; ++k) {
+				_alloc.construct(_array + _size + n - k - 1, _array[_size - k - 1]);
 				_alloc.destroy(_array + _size - k - 1);
 			}
-			while (n--) {
-				_alloc.construct(_array + i + n - 1, *first);
+			_size += n;
+
+			for (size_type i = 0; i < n; ++i) {
+				_alloc.construct(_array + pos + i, *first);
 				++first;
 			}
-			_size += n;
+
 		}
 
 
@@ -259,7 +269,7 @@ namespace ft {
 		}
 
 		void clear() {
-			if (_array != nullptr) {
+			if (_array != NULL) {
 				for(size_type i=0; i < _size; ++i)
 					_alloc.destroy(_array + i);
 				_size = 0;	
