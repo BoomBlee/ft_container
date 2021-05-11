@@ -1,0 +1,56 @@
+/*SPLICE*/
+	{
+		std::list<int> stl_list;
+		ft::list<int> ft_list;
+		std::list<int> stl_list_copy;
+		ft::list<int> ft_list_copy;
+
+		std::list<int>::iterator stl_it;
+		ft::list<int>::iterator ft_it;
+		std::list<int>::iterator stl_copy_it;
+		ft::list<int>::iterator ft_copy_it;
+
+		for (size_t i = 0; i < 27; ++i) {
+			stl_list.push_back(i);
+			ft_list.push_back(i);
+			stl_list_copy.push_back(i + 50);
+			ft_list_copy.push_back(i + 50);
+		}
+
+		stl_it = stl_list.begin();
+		ft_it = ft_list.begin();
+		stl_copy_it = stl_list_copy.end();
+		ft_copy_it = ft_list_copy.end();
+
+		stl_list.splice(++stl_it, stl_list_copy);
+		ft_list.splice(++ft_it, ft_list_copy);
+
+		fs.open("./test/list_output/splice", std::fstream::in | std::fstream::out | std::fstream::trunc);
+		bool one = compareListAttribues(fs, stl_list, ft_list);
+		bool two = compareListAttribues(fs, stl_list_copy, ft_list_copy);
+
+		for (size_t i = 0; i < 9; ++i) {
+			++stl_it;
+			--stl_copy_it;
+			++ft_it;
+			--ft_copy_it;
+		}
+
+		for (size_t i = 0; i < 27; ++i) {
+			stl_list_copy.push_back(i * -1);
+			ft_list_copy.push_back(i * -1);
+		}
+
+		stl_it = stl_list.begin();
+		ft_it = ft_list.begin();
+		stl_copy_it = stl_list_copy.end();
+		ft_copy_it = ft_list_copy.end();
+
+		stl_list.splice(stl_it, stl_list_copy, stl_copy_it);
+		ft_list.splice(ft_it, ft_list_copy, ft_copy_it);
+		bool three = compareListAttribues(fs, stl_list, ft_list);
+		bool four = compareListAttribues(fs, stl_list_copy, ft_list_copy);
+
+		printResult(one && two && three && four);
+		fs.close();
+	}

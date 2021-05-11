@@ -4,8 +4,31 @@
 #include <list>
 #include <iterator>
 #include <sys/stat.h>
+#include <cmath>
 #include "../list.hpp"
 #include "color.hpp"
+
+short unsigned int count = 0;
+short unsigned int quantity = 0;
+bool costil = false;
+
+bool func(const int& value) {return value%2;}
+
+bool func1(const int& first, const int& second) {return std::abs(first - second) < 30;}
+
+bool compare_nocase(const std::string& first, const std::string& second)
+{
+  unsigned int i=0;
+  while ( (i<first.length()) && (i<second.length()) )
+  {
+    if (tolower(first[i])<tolower(second[i])) return true;
+    else if (tolower(first[i])>tolower(second[i])) return false;
+    ++i;
+  }
+  return ( first.length() < second.length() );
+}
+
+bool func2 (int first, int second) {return first > second;}
 
 template <typename T>
 bool compareListContent(std::list<T>& stl_list, ft::list<T>& my_list) {
@@ -69,12 +92,22 @@ bool compareListAttribues(std::fstream& fs, std::list<T>& stl_list, ft::list<T>&
 
 	if (empty && size && max_size && content)
 		return true;
+	if (empty && size && !max_size && content)
+		costil = true;
 	return false;
 }
 
 void printResult(bool res) {
+	++quantity;
 	if (res) {
 		std::cout << GREEN << " [OK]" << RESET;
+		++count;
+		return ;
+	}
+	if (costil) {
+		std::cout << YELLOW << " [OK]" << RESET;
+		costil = false;
+		++count;
 		return ;
 	}
 	std::cout << RED << " [NO]" << RESET;
@@ -179,10 +212,8 @@ void test_list() {
 		fs.open("./test/list_output/operator_assign", std::fstream::in | std::fstream::out | std::fstream::trunc);
 		bool one = compareListAttribues(fs, stl_copy_list, ft_copy_list);
 		bool two = compareListAttribues(fs, stl_list, ft_list);
-		if (one && two)
-			printResult(true);
-		else
-			printResult(false);
+		
+		printResult(one && two);
 		fs.close();
 	}
 	std::cout << std::endl;
@@ -251,10 +282,7 @@ void test_list() {
 		ft::list<int>::iterator ft_it1 = ft_it++;
 		ft::list<int>::iterator ft_it2 = ++ft_it;
 
-		if (*stl_it == *ft_it && *stl_it1 == *ft_it1 && *stl_it2 == *ft_it2)
-			printResult(true);
-		else
-			printResult(false);
+		printResult(*stl_it == *ft_it && *stl_it1 == *ft_it1 && *stl_it2 == *ft_it2);
 
 		fs.open("./test/list_output/iterator_operator++", std::fstream::in | std::fstream::out | std::fstream::trunc);
 		compareListAttribues(fs, stl_list, ft_list);
@@ -289,10 +317,7 @@ void test_list() {
 		ft_it++;
 		ft::list<int>::iterator ft_it2 = --ft_it;
 
-		if (*stl_it == *ft_it && *stl_it1 == *ft_it1 && *stl_it2 == *ft_it2)
-			printResult(true);
-		else
-			printResult(false);
+		printResult(*stl_it == *ft_it && *stl_it1 == *ft_it1 && *stl_it2 == *ft_it2);
 
 		fs.open("./test/list_output/iterator_operator--", std::fstream::in | std::fstream::out | std::fstream::trunc);
 		compareListAttribues(fs, stl_list, ft_list);
@@ -414,10 +439,7 @@ void test_list() {
 		ft::list<int>::reverse_iterator ft_it1 = ft_it++;
 		ft::list<int>::reverse_iterator ft_it2 = ++ft_it;
 
-		if (*stl_it == *ft_it && *stl_it1 == *ft_it1 && *stl_it2 == *ft_it2)
-			printResult(true);
-		else
-			printResult(false);
+		printResult(*stl_it == *ft_it && *stl_it1 == *ft_it1 && *stl_it2 == *ft_it2);
 
 		fs.open("./test/list_output/reverse_iterator_operator++", std::fstream::in | std::fstream::out | std::fstream::trunc);
 		compareListAttribues(fs, stl_list, ft_list);
@@ -452,10 +474,7 @@ void test_list() {
 		ft_it++;
 		ft::list<int>::reverse_iterator ft_it2 = --ft_it;
 
-		if (*stl_it == *ft_it && *stl_it1 == *ft_it1 && *stl_it2 == *ft_it2)
-			printResult(true);
-		else
-			printResult(false);
+		printResult(*stl_it == *ft_it && *stl_it1 == *ft_it1 && *stl_it2 == *ft_it2);
 
 		fs.open("./test/list_output/reverse_iterator_operator--", std::fstream::in | std::fstream::out | std::fstream::trunc);
 		compareListAttribues(fs, stl_list, ft_list);
@@ -515,7 +534,12 @@ void test_list() {
 
 	std::cout << "Capacity:";
 	{
-		printResult(true);
+		std::list<int> stl_list;
+		ft::list<int> ft_list;
+
+		fs.open("./test/list_output/capacity", std::fstream::in | std::fstream::out | std::fstream::trunc);
+		printResult(compareListAttribues(fs, stl_list, ft_list));
+		fs.close();
 	}
 	std::cout << std::endl;
 
@@ -531,7 +555,7 @@ void test_list() {
 		std::list<int> stl_list(vect.rbegin(),vect.rend());
 		ft::list<int> ft_list(vect.rbegin(),vect.rend());
 
-		fs.open("./test/list_output/reverse_iterator_operator->", std::fstream::in | std::fstream::out | std::fstream::trunc);
+		fs.open("./test/list_output/front", std::fstream::in | std::fstream::out | std::fstream::trunc);
 		compareListAttribues(fs, stl_list, ft_list);
 		printResult(equalBool(stl_list.front(), ft_list.front()));
 		fs << "stl_value : " << stl_list.front() << std::endl;
@@ -550,18 +574,791 @@ void test_list() {
 		std::list<int> stl_list(vect.rbegin(),vect.rend());
 		ft::list<int> ft_list(vect.rbegin(),vect.rend());
 
-		fs.open("./test/list_output/reverse_iterator_operator->", std::fstream::in | std::fstream::out | std::fstream::trunc);
+		fs.open("./test/list_output/back", std::fstream::in | std::fstream::out | std::fstream::trunc);
 		compareListAttribues(fs, stl_list, ft_list);
 		printResult(equalBool(stl_list.back(), ft_list.back()));
 		fs << "stl_value : " << stl_list.back() << std::endl;
 		fs << "ft_value : " << ft_list.back() << std::endl;
 		fs.close();
 	}
+	std::cout << std::endl;
+
+	std::cout << "Modifiers:";
+	/*ASSIGN*/
+	{
+		std::vector<int> vect;
+		vect.push_back(765);
+		vect.push_back(-35);
+		vect.push_back(65);
+		vect.push_back(76);
+
+		std::list<int> stl_list;
+		ft::list<int> ft_list;
+		stl_list.assign(vect.begin(), vect.end());
+		ft_list.assign(vect.begin(), vect.end());
+		fs.open("./test/list_output/assign", std::fstream::in | std::fstream::out | std::fstream::trunc);
+		bool one = compareListAttribues(fs, stl_list, ft_list);
+
+		stl_list.assign(11, 55);
+		ft_list.assign(11, 55);
+		bool two = compareListAttribues(fs, stl_list, ft_list);
+
+		printResult(one && two);
+		fs.close();
+	}
+
+	/*PUSH_FRONT*/
+	{
+		std::list<int> stl_list(2, 5);
+		ft::list<int> ft_list(2, 5);
+
+		for (size_t i = 0; i < 33; ++i) {
+			stl_list.push_front(i);
+			ft_list.push_front(i);
+		}
+		
+
+		fs.open("./test/list_output/push_front", std::fstream::in | std::fstream::out | std::fstream::trunc);
+		printResult(compareListAttribues(fs, stl_list, ft_list));
+
+		fs.close();
+	}
+	
+	/*POP_FRONT*/
+	{
+		std::list<int> stl_list(2, 5);
+		ft::list<int> ft_list(2, 5);
+		
+		for (size_t i = 0; i < 33; ++i) {
+			stl_list.push_front(i);
+			ft_list.push_front(i);
+		}	
+		for (size_t i = 0; i < 10; ++i) {
+			stl_list.pop_front();
+			ft_list.pop_front();
+		}
+
+		fs.open("./test/list_output/pop_front", std::fstream::in | std::fstream::out | std::fstream::trunc);
+		printResult(compareListAttribues(fs, stl_list, ft_list));
+
+		fs.close();
+	}
+
+	/*PUSH_BACK*/
+	{
+		std::list<int> stl_list;
+		ft::list<int> ft_list;
+		
+		for (size_t i = 0; i < 33; ++i) {
+			stl_list.push_back(i);
+			ft_list.push_back(i);
+		}
+		
+
+		fs.open("./test/list_output/push_back", std::fstream::in | std::fstream::out | std::fstream::trunc);
+		printResult(compareListAttribues(fs, stl_list, ft_list));
+
+		fs.close();
+	}
+	
+	/*POP_BACK*/
+	{
+		std::list<int> stl_list;
+		ft::list<int> ft_list;
+		
+		for (size_t i = 0; i < 33; ++i) {
+			stl_list.push_back(i);
+			ft_list.push_back(i);
+		}	
+		for (size_t i = 0; i < 10; ++i) {
+			stl_list.pop_back();
+			ft_list.pop_back();
+		}
+
+		fs.open("./test/list_output/pop_back", std::fstream::in | std::fstream::out | std::fstream::trunc);
+		printResult(compareListAttribues(fs, stl_list, ft_list));
+
+		fs.close();
+	}
+
+	/*INSERT*/
+	{
+		std::vector<int> vect;
+		vect.push_back(765);
+		vect.push_back(-35);
+		vect.push_back(65);
+		vect.push_back(76);
+
+		std::list<int> stl_list;
+		ft::list<int> ft_list;
+		std::list<int>::iterator stl_it;
+		ft::list<int>::iterator ft_it;
+		
+		for (size_t i = 0; i < 10; ++i) {
+			stl_it = stl_list.insert(stl_list.begin(), i);
+			ft_it = ft_list.insert(ft_list.begin(), i);
+		}
+
+		fs.open("./test/list_output/insert", std::fstream::in | std::fstream::out | std::fstream::trunc);
+		printResult(compareListAttribues(fs, stl_list, ft_list));
+
+		stl_list.insert(stl_list.end(), 2, 79);
+		ft_list.insert(ft_list.end(), 2, 79);
+		printResult(compareListAttribues(fs, stl_list, ft_list));
+
+		stl_list.insert(stl_list.begin(), vect.begin(), vect.end());
+		ft_list.insert(ft_list.begin(), vect.begin(), vect.end());
+		printResult(compareListAttribues(fs, stl_list, ft_list));
+
+		printResult(equalBool(*stl_it, *ft_it));
+		fs << "stl_value : " << *stl_it << std::endl;
+		fs << "ft_value : " << *ft_it << std::endl;
+
+		fs.close();
+	}
+
+	/*ERASE*/
+	{
+		std::list<int> stl_list;
+		ft::list<int> ft_list;
+		std::list<int>::iterator stl_it;
+		ft::list<int>::iterator ft_it;
+
+		std::list<int>::iterator stl_it1;
+		ft::list<int>::iterator ft_it1;
+		std::list<int>::iterator stl_it2;
+		ft::list<int>::iterator ft_it2;
+
+		
+		for (size_t i = 2; i < 20; ++i) {
+			stl_list.insert(stl_list.begin(), i);
+			ft_list.insert(ft_list.begin(), i);
+		}
+
+		stl_it = stl_list.erase(stl_list.begin());
+		ft_it = ft_list.erase(ft_list.begin());
+
+		fs.open("./test/list_output/erase", std::fstream::in | std::fstream::out | std::fstream::trunc);
+		bool one = compareListAttribues(fs, stl_list, ft_list);
+		bool two = equalBool(*stl_it, *ft_it);
+		fs << "stl_value : " << *stl_it << std::endl;
+		fs << "ft_value : " << *ft_it << std::endl;
+
+		stl_it1 = stl_list.begin();
+		ft_it1 = ft_list.begin();
+		stl_it2 = stl_list.end();
+		ft_it2 = ft_list.end();
+
+		for (size_t i = 0; i < 4; ++i) {
+			++stl_it1;
+			--stl_it2;
+			++ft_it1;
+			--ft_it2;
+		}
+
+		stl_it = stl_list.erase(stl_it1, stl_it2);
+		ft_it = ft_list.erase(ft_it1, ft_it2);
+
+		bool three = compareListAttribues(fs, stl_list, ft_list);
+		bool four = equalBool(*stl_it, *ft_it);
+
+		fs << "stl_value : " << *stl_it << std::endl;
+		fs << "ft_value : " << *ft_it << std::endl;
+
+		printResult(one && two && three && four);
+
+		fs.close();
+	}
+
+	/*SWAP*/
+	{
+		std::list<int> stl_list;
+		ft::list<int> ft_list;
+		std::list<int> stl_swap_list;
+		ft::list<int> ft_swap_list;
+		
+		for (size_t i = 0; i < 10; ++i) {
+			stl_list.push_back(i);
+			ft_list.push_back(i);
+		}		
+		for (size_t i = 100; i > 87; --i) {
+			stl_swap_list.push_back(i);
+			ft_swap_list.push_back(i);
+		}
+
+		stl_list.swap(stl_swap_list);
+		ft_list.swap(ft_swap_list);
+
+		fs.open("./test/list_output/swap", std::fstream::in | std::fstream::out | std::fstream::trunc);
+		printResult(compareListAttribues(fs, stl_list, ft_list) &&
+				compareListAttribues(fs, stl_swap_list, ft_swap_list));
+
+		fs.close();
+	}
+
+	/*RESIZE*/
+	{
+		std::list<int> stl_list;
+		ft::list<int> ft_list;
+
+		bool one, two, three, four, five;
+
+		stl_list.resize(0);
+		ft_list.resize(0);
+
+		fs.open("./test/list_output/resize", std::fstream::in | std::fstream::out | std::fstream::trunc);
+		one = compareListAttribues(fs, stl_list, ft_list);
+
+		stl_list.resize(10);
+		ft_list.resize(10);
+		two = compareListAttribues(fs, stl_list, ft_list);
+
+		stl_list.resize(7, 1);
+		ft_list.resize(7, 1);
+		three = compareListAttribues(fs, stl_list, ft_list);
+
+		stl_list.resize(12);
+		ft_list.resize(12);
+		four = compareListAttribues(fs, stl_list, ft_list);
+
+		stl_list.resize(15, 100);
+		ft_list.resize(15, 100);
+		five = compareListAttribues(fs, stl_list, ft_list);
+
+		printResult(one && two && three && four && five);
+
+		fs.close();
+	}
+
+	/*CLEAR*/
+	{
+		std::list<int> stl_list;
+		ft::list<int> ft_list;
+		
+		for (size_t i = 0; i < 100; ++i) {
+			stl_list.push_back(i);
+			ft_list.push_back(i);
+		}
+
+		stl_list.clear();
+		ft_list.clear();
+
+		fs.open("./test/list_output/clear", std::fstream::in | std::fstream::out | std::fstream::trunc);
+		printResult(compareListAttribues(fs, stl_list, ft_list));
+
+		fs.close();
+	}
+	std::cout << std::endl;
+
+	std::cout << "Operations:";
+	/*SPLICE*/
+	{
+		std::list<int> stl_list;
+		ft::list<int> ft_list;
+		std::list<int> stl_list_copy;
+		ft::list<int> ft_list_copy;
+		std::list<int> stl_list_copy1;
+		ft::list<int> ft_list_copy1;
+
+		std::list<int>::iterator stl_it;
+		ft::list<int>::iterator ft_it;
+		std::list<int>::iterator stl_copy_it;
+		ft::list<int>::iterator ft_copy_it;
+		std::list<int>::iterator stl_copy_it1;
+		ft::list<int>::iterator ft_copy_it1;
+
+		for (size_t i = 0; i < 27; ++i) {
+			stl_list.push_back(i);
+			ft_list.push_back(i);
+			stl_list_copy.push_back(i + 50);
+			ft_list_copy.push_back(i + 50);
+			stl_list_copy1.push_back(i * -1);
+			ft_list_copy1.push_back(i * -1);
+		}
+
+		stl_it = stl_list.begin();
+		ft_it = ft_list.begin();
+		stl_copy_it = stl_list_copy.end();
+		ft_copy_it = ft_list_copy.end();
+
+		for (size_t i = 0; i < 9; ++i) {
+			++stl_it;
+			--stl_copy_it;
+			++ft_it;
+			--ft_copy_it;
+		}
+
+		stl_list.splice(++stl_it, stl_list_copy);
+		ft_list.splice(++ft_it, ft_list_copy);
+
+		fs.open("./test/list_output/splice", std::fstream::in | std::fstream::out | std::fstream::trunc);
+		bool one = compareListAttribues(fs, stl_list, ft_list);
+		bool two = compareListAttribues(fs, stl_list_copy, ft_list_copy);
+
+		stl_it = stl_list.begin();
+		ft_it = ft_list.begin();
+		stl_copy_it = stl_list_copy.end();
+		ft_copy_it = ft_list_copy.end();
+
+		stl_it = stl_list.begin();
+		ft_it = ft_list.begin();
+		stl_copy_it1 = stl_list_copy1.end();
+		ft_copy_it1 = ft_list_copy1.end();
+
+		for (size_t i = 0; i < 12; ++i) {
+			++stl_it;
+			--stl_copy_it1;
+			++ft_it;
+			--ft_copy_it1;
+		}
+
+		stl_list.splice(stl_it, stl_list_copy, stl_copy_it1++);
+		ft_list.splice(ft_it, ft_list_copy, ft_copy_it1++);
+		bool three = compareListAttribues(fs, stl_list, ft_list);
+		bool four = compareListAttribues(fs, stl_list_copy1, ft_list_copy1);
+
+		stl_list.splice(stl_it, stl_list_copy, stl_copy_it1, stl_list_copy1.end());
+		ft_list.splice(ft_it, ft_list_copy, ft_copy_it1, ft_list_copy1.end());
+		bool five = compareListAttribues(fs, stl_list, ft_list);
+		bool six = compareListAttribues(fs, stl_list_copy1, ft_list_copy1);
+
+
+
+		printResult(one && two && three && four && five && six);
+		fs.close();
+	}
+
+	/*REMOVE*/
+	{
+		std::list<int> stl_list(10,2);
+		ft::list<int> ft_list(10,2);
+
+		stl_list.insert(stl_list.end(), 10, 13);
+		ft_list.insert(ft_list.end(), 10, 13);
+
+		stl_list.insert(stl_list.begin(), 3, 5);
+		ft_list.insert(ft_list.begin(), 3, 5);
+
+		stl_list.remove(2);
+		ft_list.remove(2);
+
+		fs.open("./test/list_output/remove", std::fstream::in | std::fstream::out | std::fstream::trunc);
+		printResult(compareListAttribues(fs, stl_list, ft_list));
+
+		fs.close();
+	}
+
+	/*REMOVE_IF*/
+	{
+		std::list<int> stl_list(10,2);
+		ft::list<int> ft_list(10,2);
+
+		for (size_t i = 0; i < 27; ++i) {
+			stl_list.push_back(i);
+			ft_list.push_back(i);
+			stl_list.push_back(i + 50);
+			ft_list.push_back(i + 50);
+			stl_list.push_back(i * -1);
+			ft_list.push_back(i * -1);
+		}
+
+		stl_list.remove_if(func);
+		ft_list.remove_if(func);
+
+		fs.open("./test/list_output/remove_if", std::fstream::in | std::fstream::out | std::fstream::trunc);
+		printResult(compareListAttribues(fs, stl_list, ft_list));
+
+		fs.close();
+	}
+
+	/*UNIQUE*/
+	{
+		std::list<int> stl_list(10,2);
+		ft::list<int> ft_list(10,2);
+
+		for (size_t i = 0; i < 27; ++i) {
+			stl_list.push_back(i);
+			ft_list.push_back(i);
+			stl_list.push_back(i + 50);
+			ft_list.push_back(i + 50);
+			stl_list.push_back(i * -1);
+			ft_list.push_back(i * -1);
+		}
+
+		stl_list.unique();
+		ft_list.unique();
+
+		fs.open("./test/list_output/unique", std::fstream::in | std::fstream::out | std::fstream::trunc);
+		bool one = compareListAttribues(fs, stl_list, ft_list);
+
+		stl_list.unique(func1);
+		ft_list.unique(func1);
+
+		bool two = compareListAttribues(fs, stl_list, ft_list);
+
+		fs.close();
+	}
+
+	/*MERGE*/
+	{
+		std::list<int> stl_list(10,2);
+		ft::list<int> ft_list(10,2);
+		std::list<int> stl_list1(10,2);
+		ft::list<int> ft_list1(10,2);
+
+		for (size_t i = 0; i < 27; ++i) {
+			stl_list.push_back(i);
+			ft_list.push_back(i);
+			stl_list1.push_back(i % 5 + 3);
+			ft_list1.push_back(i % 5 + 3);
+		}
+
+		stl_list.sort();
+		ft_list.sort();
+		stl_list1.sort();
+		ft_list1.sort();
+
+		stl_list.merge(stl_list1);
+		ft_list.merge(ft_list1);
+
+		fs.open("./test/list_output/merge", std::fstream::in | std::fstream::out | std::fstream::trunc);
+		bool one = compareListAttribues(fs, stl_list, ft_list) && compareListAttribues(fs, stl_list1, ft_list1);
+
+		stl_list.clear();
+		ft_list.clear();
+		stl_list1.clear();
+		ft_list1.clear();
+
+		for (size_t i = 0; i < 27; ++i) {
+			stl_list.push_back(i);
+			ft_list.push_back(i);
+			stl_list1.push_back(i % 5 + 3);
+			ft_list1.push_back(i % 5 + 3);
+		}
+
+		stl_list.sort();
+		ft_list.sort();
+		stl_list1.sort();
+		ft_list1.sort();
+
+		stl_list.merge(stl_list1, func2);
+		ft_list.merge(ft_list1, func2);
+
+		bool two = compareListAttribues(fs, stl_list, ft_list) && compareListAttribues(fs, stl_list1, ft_list1);
+		printResult(one && two);
+
+		fs.close();
+	}
+
+	/*SORT*/
+	{
+		std::list<int> stl_list(10,2);
+		ft::list<int> ft_list(10,2);
+		std::list<int> stl_list1(2,3);
+		ft::list<int> ft_list1(2,3);
+		// std::list<std::string> stl_list_str(10, "tr");
+		// ft::list<std::string> ft_list_str(10, "tr");
+
+		for (size_t i = 0; i < 27; ++i) {
+			stl_list.push_back(i);
+			ft_list.push_back(i);
+			stl_list.push_back(i + 50);
+			ft_list.push_back(i + 50);
+			stl_list.push_back(i * -1);
+			ft_list.push_back(i * -1);
+			stl_list1.push_back(i);
+			ft_list1.push_back(i);
+			stl_list1.push_back(i + 50);
+			ft_list1.push_back(i + 50);
+			stl_list1.push_back(i * -1);
+			ft_list1.push_back(i * -1);
+		}
+
+		stl_list.sort();
+		ft_list.sort();
+
+		fs.open("./test/list_output/sort", std::fstream::in | std::fstream::out | std::fstream::trunc);
+		bool one = compareListAttribues(fs, stl_list, ft_list);
+
+		// stl_list_str.push_back("RfeG");
+		// ft_list_str.push_back("RfeG");
+		// stl_list_str.push_back("yYCFCRFCcfrfrfcrGRC");
+		// ft_list_str.push_back("yYCFCRFCcfrfrfcrGRC");
+
+		// stl_list_str.sort(compare_nocase);
+		// ft_list_str.sort(compare_nocase);
+
+		// bool two = compareListAttribues(fs, stl_list_str, ft_list_str);
+	
+		stl_list.sort(func2);
+		ft_list.sort(func2);
+		bool two = compareListAttribues(fs, stl_list1, ft_list1);
+
+		printResult(one && two);
+		fs.close();
+	}
+
+	/*REVERSE*/
+	{
+		std::list<int> stl_list(10,2);
+		ft::list<int> ft_list(10,2);
+		std::list<std::string> stl_list_str(10, "tr");
+		ft::list<std::string> ft_list_str(10, "tr");
+
+		for (size_t i = 0; i < 27; ++i) {
+			stl_list.push_back(i);
+			ft_list.push_back(i);
+			stl_list.push_back(i + 50);
+			ft_list.push_back(i + 50);
+			stl_list.push_back(i * -1);
+			ft_list.push_back(i * -1);
+		}
+
+		stl_list.reverse();
+		ft_list.reverse();
+
+		fs.open("./test/list_output/reverse", std::fstream::in | std::fstream::out | std::fstream::trunc);
+		printResult(compareListAttribues(fs, stl_list, ft_list));
+		fs.close();
+	}
+	std::cout << std::endl;
+
+	std::cout << "Non-member function overloads:";
+	/*OPERATOR==*/
+	// {
+	// 	std::list<int> stl_list;
+	// 	ft::list<int> ft_list;
+	// 	bool one=false, two=false;
+		
+	// 	for (size_t i = 0; i < 100; ++i) {
+	// 		stl_list.push_back(i);
+	// 		ft_list.push_back(i);
+	// 	}
+
+	// 	std::list<int> stl_copy_list(stl_list);
+	// 	ft::list<int> ft_copy_list(ft_list);
+
+	// 	fs.open("./test/list_output/operator==", std::fstream::in | std::fstream::out | std::fstream::trunc);
+	// 	compareListAttribues(fs, stl_list, ft_list);
+	// 	compareListAttribues(fs, stl_copy_list, ft_copy_list);
+	// 	one = ((stl_list == stl_copy_list) && (ft_list == ft_copy_list));
+
+	// 	stl_list.erase(++(++stl_list.begin()));
+	// 	ft_list.erase(++(++ft_list.begin()));
+
+	// 	compareListAttribues(fs, stl_list, ft_list);
+	// 	compareListAttribues(fs, stl_copy_list, ft_copy_list);
+	// 	two = (!(stl_list == stl_copy_list) && !(ft_list == ft_copy_list));
+
+	// 	printResult(one && two);
+	// 	fs.close();
+	// }
+
+	// /*OPERATOR!=*/
+	// {
+	// 	std::list<int> stl_list;
+	// 	ft::list<int> ft_list;
+	// 	bool one=false, two=false;
+		
+	// 	for (size_t i = 0; i < 100; ++i) {
+	// 		stl_list.push_back(i);
+	// 		ft_list.push_back(i);
+	// 	}
+
+	// 	std::list<int> stl_copy_list(stl_list);
+	// 	ft::list<int> ft_copy_list(ft_list);
+
+	// 	fs.open("./test/list_output/operato !=", std::fstream::in | std::fstream::out | std::fstream::trunc);
+	// 	compareListAttribues(fs, stl_list, ft_list);
+	// 	compareListAttribues(fs, stl_copy_list, ft_copy_list);
+	// 	one = (!(stl_list != stl_copy_list) && !(ft_list != ft_copy_list));
+
+	// 	stl_list.erase(++(++stl_list.begin()));
+	// 	ft_list.erase(++(++ft_list.begin()));
+
+	// 	compareListAttribues(fs, stl_list, ft_list);
+	// 	compareListAttribues(fs, stl_copy_list, ft_copy_list);
+	// 	two = ((stl_list != stl_copy_list) && (ft_list != ft_copy_list));
+
+	// 	printResult(one && two);
+	// 	fs.close();
+	// }
+
+	// /*OPERATOR<*/
+	// {
+	// 	std::list<int> stl_list;
+	// 	ft::list<int> ft_list;
+	// 	bool one=false, two=false, three=false;
+		
+	// 	for (size_t i = 0; i < 100; ++i) {
+	// 		stl_list.push_back(i);
+	// 		ft_list.push_back(i);
+	// 	}
+
+	// 	std::list<int> stl_copy_list(stl_list);
+	// 	ft::list<int> ft_copy_list(ft_list);
+
+	// 	stl_copy_list.erase(++(++stl_copy_list.begin()));
+	// 	ft_copy_list.erase(++(++ft_copy_list.begin()));
+
+	// 	fs.open("./test/list_output/operator<", std::fstream::in | std::fstream::out | std::fstream::trunc);
+	// 	compareListAttribues(fs, stl_list, ft_list);
+	// 	compareListAttribues(fs, stl_copy_list, ft_copy_list);
+	// 	one = ((stl_list < stl_copy_list) && (ft_list < ft_copy_list));
+
+	// 	stl_list.erase(++(++stl_list.begin()));
+	// 	ft_list.erase(++(++ft_list.begin()));
+
+	// 	compareListAttribues(fs, stl_list, ft_list);
+	// 	compareListAttribues(fs, stl_copy_list, ft_copy_list);
+	// 	two = (!(stl_list < stl_copy_list) && !(ft_list < ft_copy_list));
+
+	// 	stl_list.erase(stl_list.begin());
+	// 	ft_list.erase(ft_list.begin());
+
+	// 	compareListAttribues(fs, stl_list, ft_list);
+	// 	compareListAttribues(fs, stl_copy_list, ft_copy_list);
+	// 	three = (!(stl_list < stl_copy_list) && !(ft_list < ft_copy_list));
+
+	// 	printResult(one && two && three);
+	// 	fs.close();
+	// }
+
+	// /*OPERATOR<=*/
+	// {
+	// 	std::list<int> stl_list;
+	// 	ft::list<int> ft_list;
+	// 	bool one=false, two=false, three=false;
+		
+	// 	for (size_t i = 0; i < 100; ++i) {
+	// 		stl_list.push_back(i);
+	// 		ft_list.push_back(i);
+	// 	}
+
+	// 	std::list<int> stl_copy_list(stl_list);
+	// 	ft::list<int> ft_copy_list(ft_list);
+
+	// 	stl_copy_list.erase(++(++stl_copy_list.begin()));
+	// 	ft_copy_list.erase(++(++ft_copy_list.begin()));
+
+	// 	fs.open("./test/list_output/operator<=", std::fstream::in | std::fstream::out | std::fstream::trunc);
+	// 	compareListAttribues(fs, stl_list, ft_list);
+	// 	compareListAttribues(fs, stl_copy_list, ft_copy_list);
+	// 	one = ((stl_list <= stl_copy_list) && (ft_list <= ft_copy_list));
+
+	// 	stl_list.erase(++(++stl_list.begin()));
+	// 	ft_list.erase(++(++ft_list.begin()));
+
+	// 	compareListAttribues(fs, stl_list, ft_list);
+	// 	compareListAttribues(fs, stl_copy_list, ft_copy_list);
+	// 	two = ((stl_list <= stl_copy_list) && (ft_list <= ft_copy_list));
+
+	// 	stl_list.erase(stl_list.begin());
+	// 	ft_list.erase(ft_list.begin());
+
+	// 	compareListAttribues(fs, stl_list, ft_list);
+	// 	compareListAttribues(fs, stl_copy_list, ft_copy_list);
+	// 	three = (!(stl_list <= stl_copy_list) && !(ft_list <= ft_copy_list));
+
+	// 	printResult(one && two && three);
+	// 	fs.close();
+	// }
+
+	// /*OPERATOR>*/
+	// {
+	// 	std::list<int> stl_list;
+	// 	ft::list<int> ft_list;
+	// 	bool one=false, two=false, three=false;
+		
+	// 	for (size_t i = 0; i < 100; ++i) {
+	// 		stl_list.push_back(i);
+	// 		ft_list.push_back(i);
+	// 	}
+
+	// 	std::list<int> stl_copy_list(stl_list);
+	// 	ft::list<int> ft_copy_list(ft_list);
+
+	// 	stl_copy_list.erase(++(++stl_copy_list.begin()));
+	// 	ft_copy_list.erase(++(++ft_copy_list.begin()));
+
+	// 	fs.open("./test/list_output/operator>", std::fstream::in | std::fstream::out | std::fstream::trunc);
+	// 	compareListAttribues(fs, stl_list, ft_list);
+	// 	compareListAttribues(fs, stl_copy_list, ft_copy_list);
+	// 	one = (!(stl_list > stl_copy_list) && !(ft_list > ft_copy_list));
+
+	// 	stl_list.erase(++(++stl_list.begin()));
+	// 	ft_list.erase(++(++ft_list.begin()));
+
+	// 	compareListAttribues(fs, stl_list, ft_list);
+	// 	compareListAttribues(fs, stl_copy_list, ft_copy_list);
+	// 	two = (!(stl_list > stl_copy_list) && !(ft_list > ft_copy_list));
+
+	// 	stl_list.erase(stl_list.begin());
+	// 	ft_list.erase(ft_list.begin());
+
+	// 	compareListAttribues(fs, stl_list, ft_list);
+	// 	compareListAttribues(fs, stl_copy_list, ft_copy_list);
+	// 	three = ((stl_list > stl_copy_list) && (ft_list > ft_copy_list));
+
+	// 	printResult(one && two && three);
+	// 	fs.close();
+	// }
+
+	// /*OPERATOR>=*/
+	// {
+	// 	std::list<int> stl_list;
+	// 	ft::list<int> ft_list;
+	// 	bool one=false, two=false, three=false;
+
+	// 	for (size_t i = 0; i < 100; ++i) {
+	// 		stl_list.push_back(i);
+	// 		ft_list.push_back(i);
+	// 	}
+
+	// 	std::list<int> stl_copy_list(stl_list);
+	// 	ft::list<int> ft_copy_list(ft_list);
+
+	// 	stl_copy_list.erase(++(++stl_copy_list.begin()));
+	// 	ft_copy_list.erase(++(++ft_copy_list.begin()));
+
+	// 	fs.open("./test/list_output/operator>=", std::fstream::in | std::fstream::out | std::fstream::trunc);
+	// 	compareListAttribues(fs, stl_list, ft_list);
+	// 	compareListAttribues(fs, stl_copy_list, ft_copy_list);
+	// 	one = (!(stl_list >= stl_copy_list) && !(ft_list >= ft_copy_list));
+
+	// 	stl_list.erase(++(++stl_list.begin()));
+	// 	ft_list.erase(++(++ft_list.begin()));
+
+	// 	compareListAttribues(fs, stl_list, ft_list);
+	// 	compareListAttribues(fs, stl_copy_list, ft_copy_list);
+	// 	two = ((stl_list >= stl_copy_list) && (ft_list >= ft_copy_list));
+
+	// 	stl_list.erase(stl_list.begin());
+	// 	ft_list.erase(ft_list.begin());
+
+	// 	compareListAttribues(fs, stl_list, ft_list);
+	// 	compareListAttribues(fs, stl_copy_list, ft_copy_list);
+	// 	three = ((stl_list >= stl_copy_list) && (ft_list >= ft_copy_list));
+
+	// 	printResult(one && two && three);
+
+	// 	fs.close();
+	// }
+	std::cout << RED << " NO WORK" << RESET;
+	std::cout << std::endl;
+
+	std::cout << "Random:";
+	{
+		std::cout << RED << " currently is under development" << RESET;
+	}
+
+
 
 	std::cout << std::endl;
 }
 
 int main(int ac, char** av) {
 	test_list();
+	std::cout << CIAN << count << "/" << quantity << RESET << std::endl;
 	return 0;
 }

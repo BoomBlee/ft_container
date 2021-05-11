@@ -5,7 +5,7 @@ CFLAGS = -std=c++98 -Wall -Wextra -Werror
 
 # HEADER = $(addsuffix .hpp, $(HEADER_FILE))
 
-all: $(NAME) vector list
+all: vector list
 
 vector:
 	@$(CC) -g $(FLAGS) test/new_test_vector.cpp -o vector
@@ -22,7 +22,7 @@ list:
 # 	@echo "\033[1;32m Identify created\033[0m"
 
 clean:
-	@rm -rf $(NAME).dSYM
+	@rm -rf test/list_output test/vector_output
 	@echo "\033[1;33m clean completed\033[0m"
 
 fclean: clean

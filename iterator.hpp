@@ -97,15 +97,15 @@ namespace ft {
 		iter_list(Node<T>* x) : _p(x) {}
 		iter_list(const iter_list& obj) : _p(obj._p) {}
 		~iter_list() {};
-		bool operator==(const iter_list<T> &obj) const {return this->_p==obj._p;}
-		bool operator!=(const iter_list<T> &obj) const {return this->_p!=obj._p;}
-		iter_list& operator++() {_p=_p->next;return *this;}
-		iter_list operator++(int) {iter_list<T> tmp(*this); _p=_p->next; return tmp;}
-		iter_list& operator--() {_p=_p->prev;return *this;}
-		iter_list operator--(int) {iter_list<T> tmp(*this); _p=_p->prev; return tmp;}
+		bool operator==(const iter_list<T> &obj) const {return this->_p == obj._p;}
+		bool operator!=(const iter_list<T> &obj) const {return this->_p != obj._p;}
+		iter_list& operator++() {_p = _p->next; return *this;}
+		iter_list operator++(int) {iter_list<T> tmp(*this); _p = _p->next; return tmp;}
+		iter_list& operator--() {_p = _p->prev; return *this;}
+		iter_list operator--(int) {iter_list<T> tmp(*this); _p = _p->prev; return tmp;}
 		T& operator*() const {return *_p->value;}
 		T* operator->() const {return _p->value;}
-		iter_list& operator=(const Node<T>& element) {_p=element;return *this;}
+		iter_list& operator=(const Node<T>& element) {_p = element; return *this;}
 	};
 	
 	template<typename T>
@@ -116,15 +116,15 @@ namespace ft {
 		reverse_iter_list(Node<T>* x) : _p(x) {}
 		reverse_iter_list(const reverse_iter_list& obj) : _p(obj._p) {}
 		~reverse_iter_list() {};
-		bool operator==(const reverse_iter_list<T> &obj) const {return this->_p==obj._p;}
-		bool operator!=(const reverse_iter_list<T> &obj) const {return this->_p!=obj._p;}
-		reverse_iter_list& operator++() {_p=_p->prev;return *this;}
-		reverse_iter_list operator++(int) {reverse_iter_list<T> tmp(*this); _p=_p->prev; return tmp;}
-		reverse_iter_list& operator--() {_p=_p->next;return *this;}
-		reverse_iter_list operator--(int) {reverse_iter_list<T> tmp(*this); _p=_p->next; return tmp;}
+		bool operator==(const reverse_iter_list<T> &obj) const {return this->_p == obj._p;}
+		bool operator!=(const reverse_iter_list<T> &obj) const {return this->_p != obj._p;}
+		reverse_iter_list& operator++() {_p = _p->prev; return *this;}
+		reverse_iter_list operator++(int) {reverse_iter_list<T> tmp(*this); _p = _p->prev; return tmp;}
+		reverse_iter_list& operator--() {_p = _p->next; return *this;}
+		reverse_iter_list operator--(int) {reverse_iter_list<T> tmp(*this); _p = _p->next; return tmp;}
 		T& operator*() const {return *_p->value;}
 		T* operator->() const {return _p->value;}
-		reverse_iter_list& operator=(const Node<T>& element) {_p=element;return *this;}
+		reverse_iter_list& operator=(const Node<T>& element) {_p = element; return *this;}
 	};
 
 }

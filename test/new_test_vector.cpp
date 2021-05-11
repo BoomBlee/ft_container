@@ -70,9 +70,7 @@ bool compareVectorAttribues(std::fstream& fs, std::vector<T>& stl_vect, ft::vect
 
 	fs << "------------------------------" << std::endl;
 
-	if (empty && size && max_size && capacity && content)
-		return true;
-	return false;
+	return empty && size && max_size && capacity && content;
 }
 
 void printResult(bool res) {
@@ -92,8 +90,8 @@ void test_vector() {
 	/*DEFAULT CONSTRUCTOR*/
 	std::cout << "CONSTRUCTOR:";
 	{
-		std::vector<int> stl_vector;
-		ft::vector<int> ft_vector;
+		std::vector<std::string> stl_vector;
+		ft::vector<std::string> ft_vector;
 
 		fs.open("./test/vector_output/constructor_default", std::fstream::in | std::fstream::out | std::fstream::trunc);
 		printResult(compareVectorAttribues(fs, stl_vector, ft_vector));
@@ -249,10 +247,7 @@ void test_vector() {
 		ft::vector<int>::iterator ft_it1 = ft_it++;
 		ft::vector<int>::iterator ft_it2 = ++ft_it;
 
-		if (*stl_it == *ft_it && *stl_it1 == *ft_it1 && *stl_it2 == *ft_it2)
-			printResult(true);
-		else
-			printResult(false);
+		printResult(*stl_it == *ft_it && *stl_it1 == *ft_it1 && *stl_it2 == *ft_it2);
 
 		fs.open("./test/vector_output/iterator_operator++", std::fstream::in | std::fstream::out | std::fstream::trunc);
 		compareVectorAttribues(fs, stl_vector, ft_vector);
@@ -287,10 +282,7 @@ void test_vector() {
 		ft_it++;
 		ft::vector<int>::iterator ft_it2 = --ft_it;
 
-		if (*stl_it == *ft_it && *stl_it1 == *ft_it1 && *stl_it2 == *ft_it2)
-			printResult(true);
-		else
-			printResult(false);
+		printResult(*stl_it == *ft_it && *stl_it1 == *ft_it1 && *stl_it2 == *ft_it2);
 
 		fs.open("./test/vector_output/iterator_operator--", std::fstream::in | std::fstream::out | std::fstream::trunc);
 		compareVectorAttribues(fs, stl_vector, ft_vector);
@@ -325,11 +317,6 @@ void test_vector() {
 		fs << "ft_value : " << *ft_it << std::endl;
 		fs.close();
 
-		if (!equalBool(*stl_it, *ft_it)) {
-			printResult(false);
-			return ;
-		}
-
 		stl_it -= 2;
 		ft_it -= 2;
 
@@ -339,10 +326,7 @@ void test_vector() {
 		fs << "ft_value : " << *ft_it << std::endl;
 		fs.close();
 
-		if (equalBool(*stl_it, *ft_it))
-			printResult(true);
-		else
-			printResult(false);
+		printResult(equalBool(*stl_it, *ft_it));
 	}
 
 	/*OPERATOR []*/
@@ -479,10 +463,7 @@ void test_vector() {
 		ft::vector<int>::reverse_iterator ft_it1 = ft_it++;
 		ft::vector<int>::reverse_iterator ft_it2 = ++ft_it;
 
-		if (*stl_it == *ft_it && *stl_it1 == *ft_it1 && *stl_it2 == *ft_it2)
-			printResult(true);
-		else
-			printResult(false);
+		printResult(*stl_it == *ft_it && *stl_it1 == *ft_it1 && *stl_it2 == *ft_it2);
 
 		fs.open("./test/vector_output/reverse_iterator_operator++", std::fstream::in | std::fstream::out | std::fstream::trunc);
 		compareVectorAttribues(fs, stl_vector, ft_vector);
@@ -517,10 +498,7 @@ void test_vector() {
 		ft_it++;
 		ft::vector<int>::reverse_iterator ft_it2 = --ft_it;
 
-		if (*stl_it == *ft_it && *stl_it1 == *ft_it1 && *stl_it2 == *ft_it2)
-			printResult(true);
-		else
-			printResult(false);
+		printResult(*stl_it == *ft_it && *stl_it1 == *ft_it1 && *stl_it2 == *ft_it2);
 
 		fs.open("./test/vector_output/reverse_iterator_operator--", std::fstream::in | std::fstream::out | std::fstream::trunc);
 		compareVectorAttribues(fs, stl_vector, ft_vector);
@@ -550,29 +528,23 @@ void test_vector() {
 		ft_it += 3;
 
 		fs.open("./test/vector_output/reverse_iterator_operator+=", std::fstream::in | std::fstream::out | std::fstream::trunc);
-		compareVectorAttribues(fs, stl_vector, ft_vector);
+		bool one = compareVectorAttribues(fs, stl_vector, ft_vector);
+		bool two = equalBool(*stl_it, *ft_it);
 		fs << "stl_value : " << *stl_it << std::endl;
 		fs << "ft_value : " << *ft_it << std::endl;
 		fs.close();
-
-		if (!equalBool(*stl_it, *ft_it)) {
-			printResult(false);
-			return ;
-		}
 
 		stl_it -= 2;
 		ft_it -= 2;
 
 		fs.open("./test/vector_output/reverse_iterator_operator-=", std::fstream::in | std::fstream::out | std::fstream::trunc);
-		compareVectorAttribues(fs, stl_vector, ft_vector);
+		bool three = compareVectorAttribues(fs, stl_vector, ft_vector);
+		bool four = equalBool(*stl_it, *ft_it);
 		fs << "stl_value : " << *stl_it << std::endl;
 		fs << "ft_value : " << *ft_it << std::endl;
 		fs.close();
 
-		if (equalBool(*stl_it, *ft_it))
-			printResult(true);
-		else
-			printResult(false);
+		printResult(one && two && three && four);
 	}
 
 	/*OPERATOR []*/
@@ -678,10 +650,7 @@ void test_vector() {
 		ft_vector.resize(15, 100);
 		five = compareVectorAttribues(fs, stl_vector, ft_vector);
 
-		if (one && two && three && four && five)
-			printResult(true);
-		else
-			printResult(false);
+		printResult(one && two && three && four && five);
 
 		fs.close();
 	}
@@ -710,10 +679,7 @@ void test_vector() {
 		ft_vector.reserve(7);
 		two = compareVectorAttribues(fs, stl_vector, ft_vector);
 
-		if (one && two)
-			printResult(true);
-		else
-			printResult(false);
+		printResult(one && two);
 
 		fs.close();
 	}
@@ -774,10 +740,7 @@ void test_vector() {
 			except_ft = true;
 		}
 
-		if (res && except_ft && except_stl)
-			printResult(true);
-		else
-			printResult(false);
+		printResult(res && except_ft && except_stl);
 
 		fs.close();
 	}
@@ -921,8 +884,10 @@ void test_vector() {
 	{
 		std::vector<int> stl_vector;
 		ft::vector<int> ft_vector;
+		std::vector<int>::iterator stl_it;
+		ft::vector<int>::iterator ft_it;
 		
-		for (size_t i = 0; i < 10; ++i) {
+		for (size_t i = 2; i < 20; ++i) {
 			stl_vector.insert(stl_vector.begin(), i);
 			ft_vector.insert(ft_vector.begin(), i);
 		}
@@ -930,11 +895,17 @@ void test_vector() {
 		stl_vector.erase(stl_vector.begin());
 		ft_vector.erase(ft_vector.begin());
 
-		stl_vector.erase(stl_vector.begin() + 3);
-		ft_vector.erase(ft_vector.begin() + 3);
+		stl_it = stl_vector.erase(stl_vector.begin() + 3, --stl_vector.end());
+		ft_it = ft_vector.erase(ft_vector.begin() + 3, --ft_vector.end());
 
 		fs.open("./test/vector_output/erase", std::fstream::in | std::fstream::out | std::fstream::trunc);
-		printResult(compareVectorAttribues(fs, stl_vector, ft_vector));
+		bool one = compareVectorAttribues(fs, stl_vector, ft_vector);
+		bool two = equalBool(*stl_it, *ft_it);
+
+		fs << "stl_value : " << *stl_it << std::endl;
+		fs << "ft_value : " << *ft_it << std::endl;
+
+		printResult(one && two);
 
 		fs.close();
 	}
@@ -1012,10 +983,7 @@ void test_vector() {
 		compareVectorAttribues(fs, stl_copy_vector, ft_copy_vector);
 		two = (!(stl_vector == stl_copy_vector) && !(ft_vector == ft_copy_vector));
 
-		if (one && two)
-			printResult(true);
-		else
-			printResult(false);
+		printResult(one && two);
 		fs.close();
 	}
 
@@ -1045,10 +1013,7 @@ void test_vector() {
 		compareVectorAttribues(fs, stl_copy_vector, ft_copy_vector);
 		two = ((stl_vector != stl_copy_vector) && (ft_vector != ft_copy_vector));
 
-		if (one && two)
-			printResult(true);
-		else
-			printResult(false);
+		printResult(one && two);
 		fs.close();
 	}
 
@@ -1088,10 +1053,7 @@ void test_vector() {
 		compareVectorAttribues(fs, stl_copy_vector, ft_copy_vector);
 		three = (!(stl_vector < stl_copy_vector) && !(ft_vector < ft_copy_vector));
 
-		if (one && two && three)
-			printResult(true);
-		else
-			printResult(false);
+		printResult(one && two && three);
 		fs.close();
 	}
 
@@ -1131,10 +1093,7 @@ void test_vector() {
 		compareVectorAttribues(fs, stl_copy_vector, ft_copy_vector);
 		three = (!(stl_vector <= stl_copy_vector) && !(ft_vector <= ft_copy_vector));
 
-		if (one && two && three)
-			printResult(true);
-		else
-			printResult(false);
+		printResult(one && two && three);
 		fs.close();
 	}
 
@@ -1174,10 +1133,7 @@ void test_vector() {
 		compareVectorAttribues(fs, stl_copy_vector, ft_copy_vector);
 		three = ((stl_vector > stl_copy_vector) && (ft_vector > ft_copy_vector));
 
-		if (one && two && three)
-			printResult(true);
-		else
-			printResult(false);
+		printResult(one && two && three);
 		fs.close();
 	}
 
@@ -1217,10 +1173,7 @@ void test_vector() {
 		compareVectorAttribues(fs, stl_copy_vector, ft_copy_vector);
 		three = ((stl_vector >= stl_copy_vector) && (ft_vector >= ft_copy_vector));
 
-		if (one && two && three)
-			printResult(true);
-		else
-			printResult(false);
+		printResult(one && two && three);
 
 		fs.close();
 	}
