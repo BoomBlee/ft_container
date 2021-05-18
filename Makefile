@@ -5,7 +5,21 @@ CFLAGS = -std=c++98 -Wall -Wextra -Werror
 
 # HEADER = $(addsuffix .hpp, $(HEADER_FILE))
 
-all: vector list
+DIR = test/
+
+FILE = \
+new_test_vector.cpp \
+list.cpp \
+main.cpp
+
+FILES = $(addprefix $(DIR), $(FILE))
+
+all: $(NAME)
+
+$(NAME): $(FILES)
+	@$(CC) -g $(FLAGS) $(FILES) -o $(NAME)
+	@./$(NAME)
+
 
 vector:
 	@$(CC) -g $(FLAGS) test/new_test_vector.cpp -o vector

@@ -40,8 +40,8 @@ namespace ft {
 		iter(T* x) : p(x) {}
 		iter(const iter& obj) : p(obj.p) {}
 		~iter() {}
-		bool operator==(const iter<T> &obj) const {return this->p==obj.p;}
-		bool operator!=(const iter<T> &obj) const {return this->p!=obj.p;}
+		bool operator==(const iter<T> &obj) const {return this->p == obj.p;}
+		bool operator!=(const iter<T> &obj) const {return this->p != obj.p;}
 		iter& operator++() {++p; return *this;}
 		iter operator++(int) {iter tmp(*this); ++p; return tmp;}
 		iter& operator--() {--p; return *this;}
@@ -51,8 +51,8 @@ namespace ft {
 		bool operator>(const iter& it) const {return this->p > it.p;}
 		bool operator>=(const iter& it) const {return this->p >= it.p;}
 		bool operator<=(const iter& it) const {return this->p <= it.p;}
-		T& operator[](int i) const {return p[i];}
-		iter& operator=(const T& element) {p=element;return *this;}
+		T& operator[](size_t i) const {return p[i];}
+		iter& operator=(const T& element) {p =element;return *this;}
 		T* operator->() const {return p;}
 		iter operator+(int n) {p += n; return *this;}
 		iter operator-(int n) {p -= n; return *this;}
@@ -69,8 +69,8 @@ namespace ft {
 		reverse_iter(T* x) : p(x) {}
 		reverse_iter(const reverse_iter& obj) : p(obj.p) {}
 		~reverse_iter() {}
-		bool operator==(const reverse_iter<T> &obj) const {return this->p==obj.p;}
-		bool operator!=(const reverse_iter<T> &obj) const {return this->p!=obj.p;}
+		bool operator==(const reverse_iter<T> &obj) const {return this->p == obj.p;}
+		bool operator!=(const reverse_iter<T> &obj) const {return this->p != obj.p;}
 		reverse_iter& operator++() {--p; return *this;}
 		reverse_iter operator++(int) {reverse_iter tmp(*this); --p; return tmp;}
 		reverse_iter& operator--() {++p; return *this;}
@@ -80,8 +80,8 @@ namespace ft {
 		bool operator>(const reverse_iter& it) const {return this->p > it.p;}
 		bool operator>=(const reverse_iter& it) const {return this->p >= it.p;}
 		bool operator<=(const reverse_iter& it) const {return this->p <= it.p;}
-		T& operator[](int i) const {return p[i];}
-		reverse_iter& operator=(const T& element) {p=element;return *this;}
+		T& operator[](size_t i) const {return p[i];}
+		reverse_iter& operator=(const T& element) {p = element;return *this;}
 		T* operator->() const {return p;}
 		reverse_iter operator+(int n) {p -= n; return *this;}
 		reverse_iter operator-(int n) {p += n; return *this;}

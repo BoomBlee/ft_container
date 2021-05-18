@@ -8,15 +8,15 @@
 #include "../list.hpp"
 #include "color.hpp"
 
-short unsigned int count = 0;
-short unsigned int quantity = 0;
-bool costil = false;
+short unsigned int count_list = 0;
+short unsigned int quantity_list = 0;
+bool costil_list = false;
 
-bool func(const int& value) {return value%2;}
+static bool func(const int& value) {return value%2;}
 
-bool func1(const int& first, const int& second) {return std::abs(first - second) < 30;}
+static bool func1(const int& first, const int& second) {return std::abs(first - second) < 30;}
 
-bool compare_nocase(const std::string& first, const std::string& second)
+static bool compare_nocase(const std::string& first, const std::string& second)
 {
   unsigned int i=0;
   while ( (i<first.length()) && (i<second.length()) )
@@ -28,10 +28,10 @@ bool compare_nocase(const std::string& first, const std::string& second)
   return ( first.length() < second.length() );
 }
 
-bool func2 (int first, int second) {return first > second;}
+static bool func2 (int first, int second) {return first > second;}
 
 template <typename T>
-bool compareListContent(std::list<T>& stl_list, ft::list<T>& my_list) {
+static bool compareListContent(std::list<T>& stl_list, ft::list<T>& my_list) {
 	typename ft::list<T>::iterator ft_it = my_list.begin();
 	typename std::list<T>::iterator stl_it = stl_list.begin();
 	if (my_list.size() != stl_list.size())
@@ -44,12 +44,12 @@ bool compareListContent(std::list<T>& stl_list, ft::list<T>& my_list) {
 }
 
 template <typename T>
-bool equalBool(T t1, T t2) {
+static bool equalBool(T t1, T t2) {
 	return t1 == t2;
 }
 
 template <class T>
-bool compareListAttribues(std::fstream& fs, std::list<T>& stl_list, ft::list<T>& my_list) {
+static bool compareListAttribues(std::fstream& fs, std::list<T>& stl_list, ft::list<T>& my_list) {
 	
 	bool empty = equalBool(stl_list.empty(), my_list.empty());
 	bool size = equalBool(stl_list.size(), my_list.size());
@@ -93,21 +93,21 @@ bool compareListAttribues(std::fstream& fs, std::list<T>& stl_list, ft::list<T>&
 	if (empty && size && max_size && content)
 		return true;
 	if (empty && size && !max_size && content)
-		costil = true;
+		costil_list = true;
 	return false;
 }
 
-void printResult(bool res) {
-	++quantity;
+static void printResult(bool res) {
+	++quantity_list;
 	if (res) {
 		std::cout << GREEN << " [OK]" << RESET;
-		++count;
+		++count_list;
 		return ;
 	}
-	if (costil) {
+	if (costil_list) {
 		std::cout << YELLOW << " [OK]" << RESET;
-		costil = false;
-		++count;
+		costil_list = false;
+		++count_list;
 		return ;
 	}
 	std::cout << RED << " [NO]" << RESET;
@@ -1353,12 +1353,15 @@ void test_list() {
 	}
 
 
-
 	std::cout << std::endl;
+
 }
 
-int main(int ac, char** av) {
-	test_list();
-	std::cout << CIAN << count << "/" << quantity << RESET << std::endl;
-	return 0;
-}
+short unsigned int getCount_list() {return count_list;}
+short unsigned int getQuantity_list() {return quantity_list;}
+
+// int main(int ac, char** av) {
+// 	test_list();
+// 	std::cout << CIAN << count_list << "/" << quantity_list << RESET << std::endl;
+// 	return 0;
+// }
