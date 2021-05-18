@@ -16,7 +16,7 @@ namespace ft {
 		typedef typename allocator_type::const_pointer		const_pointer;
 		typedef typename ft::iter<value_type>				iterator;
 		typedef typename ft::iter<const value_type>			const_iterator;
-		typedef typename ft::reverse_iter<value_type>			reverse_iterator;
+		typedef typename ft::reverse_iter<value_type>		reverse_iterator;
 		typedef typename ft::reverse_iter<const value_type>	const_reverse_iterator;
 		typedef std::ptrdiff_t								difference_type;
 		typedef size_t										size_type;
@@ -39,8 +39,7 @@ namespace ft {
 		template <class InputIterator>
 		vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(), char (*)[sizeof(*first)] = NULL) : _alloc(alloc), _size(0) {
 			size_type n = 0;
-			for (InputIterator it=first; it != last; ++it)
-				++n;
+			for (InputIterator it=first; it != last; ++it, ++n);
 			_array = _alloc.allocate(n);
 			_capacity = n;
 			insert(begin(), first, last);

@@ -71,7 +71,10 @@
 		"map": "cpp",
 		"random": "cpp",
 		"fstream": "cpp",
-		"cinttypes": "cpp"
+		"cinttypes": "cpp",
+		"__tree": "cpp",
+		"iomanip": "cpp",
+		"stack": "cpp"
 	},
 	"lldb.displayFormat": "auto",
 	"lldb.showDisassembly": "always",

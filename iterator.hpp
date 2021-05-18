@@ -3,6 +3,9 @@
 #include <iostream>
 #include <iterator>
 
+#define RED true
+#define BLACK false
+
 template<typename T>
 struct Node {
 public:
@@ -11,13 +14,15 @@ public:
 	Node*		prev;
 };
 
-template<typename T>
+template<typename Key, typename T>
 struct node_map {
 public:
-	T*				value;
-	node_map*		parent;
-	node_map*		left;
-	node_map*		right;
+	Key					key;
+	T					value;
+	node_map*			parent;
+	node_map*			left;
+	node_map*			right;
+	bool				is_red;
 };
 
 template <class Category, class T, class Distance = std::ptrdiff_t, class Pointer = T*, class Reference = T&>
@@ -80,7 +85,7 @@ namespace ft {
 		bool operator>(const reverse_iter& it) const {return this->p > it.p;}
 		bool operator>=(const reverse_iter& it) const {return this->p >= it.p;}
 		bool operator<=(const reverse_iter& it) const {return this->p <= it.p;}
-		T& operator[](size_t i) const {return p[i];}
+		T& operator[](size_t i) const {return p[-i];}
 		reverse_iter& operator=(const T& element) {p = element;return *this;}
 		T* operator->() const {return p;}
 		reverse_iter operator+(int n) {p -= n; return *this;}
@@ -88,7 +93,7 @@ namespace ft {
 		reverse_iter& operator+=(std::ptrdiff_t n) { p -= n; return *this;}
 		reverse_iter& operator-=(std::ptrdiff_t n) { p += n; return *this;}
 	};
-	
+
 	template<typename T>
 	class iter_list {
 	public:
@@ -107,7 +112,26 @@ namespace ft {
 		T* operator->() const {return _p->value;}
 		iter_list& operator=(const Node<T>& element) {_p = element; return *this;}
 	};
-	
+
+	template<typename T>
+	class const_iter_list {
+	public:
+		const Node<T>*	_p;
+		const_iter_list() {};
+		const_iter_list(Node<T>* x) : _p(x) {}
+		const_iter_list(const const_iter_list& obj) : _p(obj._p) {}
+		~const_iter_list() {};
+		bool operator==(const const_iter_list<T> &obj) const {return this->_p == obj._p;}
+		bool operator!=(const const_iter_list<T> &obj) const {return this->_p != obj._p;}
+		const_iter_list& operator++() {_p = _p->next; return *this;}
+		const_iter_list operator++(int) {const_iter_list<T> tmp(*this); _p = _p->next; return tmp;}
+		const_iter_list& operator--() {_p = _p->prev; return *this;}
+		const_iter_list operator--(int) {const_iter_list<T> tmp(*this); _p = _p->prev; return tmp;}
+		T& operator*() const {return *_p->value;}
+		T* operator->() const {return _p->value;}
+		const_iter_list& operator=(const Node<T>& element) {_p = element; return *this;}
+	};
+
 	template<typename T>
 	class reverse_iter_list {
 	public:

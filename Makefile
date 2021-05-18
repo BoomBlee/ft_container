@@ -16,7 +16,7 @@ FILES = $(addprefix $(DIR), $(FILE))
 
 all: $(NAME)
 
-$(NAME): $(FILES)
+$(NAME): $(FILES) iterator.hpp
 	@$(CC) -g $(FLAGS) $(FILES) -o $(NAME)
 	@./$(NAME)
 

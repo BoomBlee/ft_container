@@ -1125,226 +1125,225 @@ void test_list() {
 
 	std::cout << "Non-member function overloads:";
 	/*OPERATOR==*/
-	// {
-	// 	std::list<int> stl_list;
-	// 	ft::list<int> ft_list;
-	// 	bool one=false, two=false;
+	{
+		std::list<int> stl_list;
+		ft::list<int> ft_list;
+		bool one=false, two=false;
 		
-	// 	for (size_t i = 0; i < 100; ++i) {
-	// 		stl_list.push_back(i);
-	// 		ft_list.push_back(i);
-	// 	}
+		for (size_t i = 0; i < 100; ++i) {
+			stl_list.push_back(i);
+			ft_list.push_back(i);
+		}
 
-	// 	std::list<int> stl_copy_list(stl_list);
-	// 	ft::list<int> ft_copy_list(ft_list);
+		std::list<int> stl_copy_list(stl_list);
+		ft::list<int> ft_copy_list(ft_list);
 
-	// 	fs.open("./test/list_output/operator==", std::fstream::in | std::fstream::out | std::fstream::trunc);
-	// 	compareListAttribues(fs, stl_list, ft_list);
-	// 	compareListAttribues(fs, stl_copy_list, ft_copy_list);
-	// 	one = ((stl_list == stl_copy_list) && (ft_list == ft_copy_list));
+		fs.open("./test/list_output/operator==", std::fstream::in | std::fstream::out | std::fstream::trunc);
+		compareListAttribues(fs, stl_list, ft_list);
+		compareListAttribues(fs, stl_copy_list, ft_copy_list);
+		one = ((stl_list == stl_copy_list) && (ft_list == ft_copy_list));
 
-	// 	stl_list.erase(++(++stl_list.begin()));
-	// 	ft_list.erase(++(++ft_list.begin()));
+		stl_list.erase(++(++stl_list.begin()));
+		ft_list.erase(++(++ft_list.begin()));
 
-	// 	compareListAttribues(fs, stl_list, ft_list);
-	// 	compareListAttribues(fs, stl_copy_list, ft_copy_list);
-	// 	two = (!(stl_list == stl_copy_list) && !(ft_list == ft_copy_list));
+		compareListAttribues(fs, stl_list, ft_list);
+		compareListAttribues(fs, stl_copy_list, ft_copy_list);
+		two = (!(stl_list == stl_copy_list) && !(ft_list == ft_copy_list));
 
-	// 	printResult(one && two);
-	// 	fs.close();
-	// }
+		printResult(one && two);
+		fs.close();
+	}
 
-	// /*OPERATOR!=*/
-	// {
-	// 	std::list<int> stl_list;
-	// 	ft::list<int> ft_list;
-	// 	bool one=false, two=false;
+	/*OPERATOR!=*/
+	{
+		std::list<int> stl_list;
+		ft::list<int> ft_list;
+		bool one=false, two=false;
 		
-	// 	for (size_t i = 0; i < 100; ++i) {
-	// 		stl_list.push_back(i);
-	// 		ft_list.push_back(i);
-	// 	}
+		for (size_t i = 0; i < 100; ++i) {
+			stl_list.push_back(i);
+			ft_list.push_back(i);
+		}
 
-	// 	std::list<int> stl_copy_list(stl_list);
-	// 	ft::list<int> ft_copy_list(ft_list);
+		std::list<int> stl_copy_list(stl_list);
+		ft::list<int> ft_copy_list(ft_list);
 
-	// 	fs.open("./test/list_output/operato !=", std::fstream::in | std::fstream::out | std::fstream::trunc);
-	// 	compareListAttribues(fs, stl_list, ft_list);
-	// 	compareListAttribues(fs, stl_copy_list, ft_copy_list);
-	// 	one = (!(stl_list != stl_copy_list) && !(ft_list != ft_copy_list));
+		fs.open("./test/list_output/operato !=", std::fstream::in | std::fstream::out | std::fstream::trunc);
+		compareListAttribues(fs, stl_list, ft_list);
+		compareListAttribues(fs, stl_copy_list, ft_copy_list);
+		one = (!(stl_list != stl_copy_list) && !(ft_list != ft_copy_list));
 
-	// 	stl_list.erase(++(++stl_list.begin()));
-	// 	ft_list.erase(++(++ft_list.begin()));
+		stl_list.erase(++(++stl_list.begin()));
+		ft_list.erase(++(++ft_list.begin()));
 
-	// 	compareListAttribues(fs, stl_list, ft_list);
-	// 	compareListAttribues(fs, stl_copy_list, ft_copy_list);
-	// 	two = ((stl_list != stl_copy_list) && (ft_list != ft_copy_list));
+		compareListAttribues(fs, stl_list, ft_list);
+		compareListAttribues(fs, stl_copy_list, ft_copy_list);
+		two = ((stl_list != stl_copy_list) && (ft_list != ft_copy_list));
 
-	// 	printResult(one && two);
-	// 	fs.close();
-	// }
+		printResult(one && two);
+		fs.close();
+	}
 
-	// /*OPERATOR<*/
-	// {
-	// 	std::list<int> stl_list;
-	// 	ft::list<int> ft_list;
-	// 	bool one=false, two=false, three=false;
+	/*OPERATOR<*/
+	{
+		std::list<int> stl_list;
+		ft::list<int> ft_list;
+		bool one=false, two=false, three=false;
 		
-	// 	for (size_t i = 0; i < 100; ++i) {
-	// 		stl_list.push_back(i);
-	// 		ft_list.push_back(i);
-	// 	}
+		for (size_t i = 0; i < 100; ++i) {
+			stl_list.push_back(i);
+			ft_list.push_back(i);
+		}
 
-	// 	std::list<int> stl_copy_list(stl_list);
-	// 	ft::list<int> ft_copy_list(ft_list);
+		std::list<int> stl_copy_list(stl_list);
+		ft::list<int> ft_copy_list(ft_list);
 
-	// 	stl_copy_list.erase(++(++stl_copy_list.begin()));
-	// 	ft_copy_list.erase(++(++ft_copy_list.begin()));
+		stl_copy_list.erase(++(++stl_copy_list.begin()));
+		ft_copy_list.erase(++(++ft_copy_list.begin()));
 
-	// 	fs.open("./test/list_output/operator<", std::fstream::in | std::fstream::out | std::fstream::trunc);
-	// 	compareListAttribues(fs, stl_list, ft_list);
-	// 	compareListAttribues(fs, stl_copy_list, ft_copy_list);
-	// 	one = ((stl_list < stl_copy_list) && (ft_list < ft_copy_list));
+		fs.open("./test/list_output/operator<", std::fstream::in | std::fstream::out | std::fstream::trunc);
+		compareListAttribues(fs, stl_list, ft_list);
+		compareListAttribues(fs, stl_copy_list, ft_copy_list);
+		one = ((stl_list < stl_copy_list) && (ft_list < ft_copy_list));
 
-	// 	stl_list.erase(++(++stl_list.begin()));
-	// 	ft_list.erase(++(++ft_list.begin()));
+		stl_list.erase(++(++stl_list.begin()));
+		ft_list.erase(++(++ft_list.begin()));
 
-	// 	compareListAttribues(fs, stl_list, ft_list);
-	// 	compareListAttribues(fs, stl_copy_list, ft_copy_list);
-	// 	two = (!(stl_list < stl_copy_list) && !(ft_list < ft_copy_list));
+		compareListAttribues(fs, stl_list, ft_list);
+		compareListAttribues(fs, stl_copy_list, ft_copy_list);
+		two = (!(stl_list < stl_copy_list) && !(ft_list < ft_copy_list));
 
-	// 	stl_list.erase(stl_list.begin());
-	// 	ft_list.erase(ft_list.begin());
+		stl_list.erase(stl_list.begin());
+		ft_list.erase(ft_list.begin());
 
-	// 	compareListAttribues(fs, stl_list, ft_list);
-	// 	compareListAttribues(fs, stl_copy_list, ft_copy_list);
-	// 	three = (!(stl_list < stl_copy_list) && !(ft_list < ft_copy_list));
+		compareListAttribues(fs, stl_list, ft_list);
+		compareListAttribues(fs, stl_copy_list, ft_copy_list);
+		three = (!(stl_list < stl_copy_list) && !(ft_list < ft_copy_list));
 
-	// 	printResult(one && two && three);
-	// 	fs.close();
-	// }
+		printResult(one && two && three);
+		fs.close();
+	}
 
-	// /*OPERATOR<=*/
-	// {
-	// 	std::list<int> stl_list;
-	// 	ft::list<int> ft_list;
-	// 	bool one=false, two=false, three=false;
+	/*OPERATOR<=*/
+	{
+		std::list<int> stl_list;
+		ft::list<int> ft_list;
+		bool one=false, two=false, three=false;
 		
-	// 	for (size_t i = 0; i < 100; ++i) {
-	// 		stl_list.push_back(i);
-	// 		ft_list.push_back(i);
-	// 	}
+		for (size_t i = 0; i < 100; ++i) {
+			stl_list.push_back(i);
+			ft_list.push_back(i);
+		}
 
-	// 	std::list<int> stl_copy_list(stl_list);
-	// 	ft::list<int> ft_copy_list(ft_list);
+		std::list<int> stl_copy_list(stl_list);
+		ft::list<int> ft_copy_list(ft_list);
 
-	// 	stl_copy_list.erase(++(++stl_copy_list.begin()));
-	// 	ft_copy_list.erase(++(++ft_copy_list.begin()));
+		stl_copy_list.erase(++(++stl_copy_list.begin()));
+		ft_copy_list.erase(++(++ft_copy_list.begin()));
 
-	// 	fs.open("./test/list_output/operator<=", std::fstream::in | std::fstream::out | std::fstream::trunc);
-	// 	compareListAttribues(fs, stl_list, ft_list);
-	// 	compareListAttribues(fs, stl_copy_list, ft_copy_list);
-	// 	one = ((stl_list <= stl_copy_list) && (ft_list <= ft_copy_list));
+		fs.open("./test/list_output/operator<=", std::fstream::in | std::fstream::out | std::fstream::trunc);
+		compareListAttribues(fs, stl_list, ft_list);
+		compareListAttribues(fs, stl_copy_list, ft_copy_list);
+		one = ((stl_list <= stl_copy_list) && (ft_list <= ft_copy_list));
 
-	// 	stl_list.erase(++(++stl_list.begin()));
-	// 	ft_list.erase(++(++ft_list.begin()));
+		stl_list.erase(++(++stl_list.begin()));
+		ft_list.erase(++(++ft_list.begin()));
 
-	// 	compareListAttribues(fs, stl_list, ft_list);
-	// 	compareListAttribues(fs, stl_copy_list, ft_copy_list);
-	// 	two = ((stl_list <= stl_copy_list) && (ft_list <= ft_copy_list));
+		compareListAttribues(fs, stl_list, ft_list);
+		compareListAttribues(fs, stl_copy_list, ft_copy_list);
+		two = ((stl_list <= stl_copy_list) && (ft_list <= ft_copy_list));
 
-	// 	stl_list.erase(stl_list.begin());
-	// 	ft_list.erase(ft_list.begin());
+		stl_list.erase(stl_list.begin());
+		ft_list.erase(ft_list.begin());
 
-	// 	compareListAttribues(fs, stl_list, ft_list);
-	// 	compareListAttribues(fs, stl_copy_list, ft_copy_list);
-	// 	three = (!(stl_list <= stl_copy_list) && !(ft_list <= ft_copy_list));
+		compareListAttribues(fs, stl_list, ft_list);
+		compareListAttribues(fs, stl_copy_list, ft_copy_list);
+		three = (!(stl_list <= stl_copy_list) && !(ft_list <= ft_copy_list));
 
-	// 	printResult(one && two && three);
-	// 	fs.close();
-	// }
+		printResult(one && two && three);
+		fs.close();
+	}
 
-	// /*OPERATOR>*/
-	// {
-	// 	std::list<int> stl_list;
-	// 	ft::list<int> ft_list;
-	// 	bool one=false, two=false, three=false;
+	/*OPERATOR>*/
+	{
+		std::list<int> stl_list;
+		ft::list<int> ft_list;
+		bool one=false, two=false, three=false;
 		
-	// 	for (size_t i = 0; i < 100; ++i) {
-	// 		stl_list.push_back(i);
-	// 		ft_list.push_back(i);
-	// 	}
+		for (size_t i = 0; i < 100; ++i) {
+			stl_list.push_back(i);
+			ft_list.push_back(i);
+		}
 
-	// 	std::list<int> stl_copy_list(stl_list);
-	// 	ft::list<int> ft_copy_list(ft_list);
+		std::list<int> stl_copy_list(stl_list);
+		ft::list<int> ft_copy_list(ft_list);
 
-	// 	stl_copy_list.erase(++(++stl_copy_list.begin()));
-	// 	ft_copy_list.erase(++(++ft_copy_list.begin()));
+		stl_copy_list.erase(++(++stl_copy_list.begin()));
+		ft_copy_list.erase(++(++ft_copy_list.begin()));
 
-	// 	fs.open("./test/list_output/operator>", std::fstream::in | std::fstream::out | std::fstream::trunc);
-	// 	compareListAttribues(fs, stl_list, ft_list);
-	// 	compareListAttribues(fs, stl_copy_list, ft_copy_list);
-	// 	one = (!(stl_list > stl_copy_list) && !(ft_list > ft_copy_list));
+		fs.open("./test/list_output/operator>", std::fstream::in | std::fstream::out | std::fstream::trunc);
+		compareListAttribues(fs, stl_list, ft_list);
+		compareListAttribues(fs, stl_copy_list, ft_copy_list);
+		one = (!(stl_list > stl_copy_list) && !(ft_list > ft_copy_list));
 
-	// 	stl_list.erase(++(++stl_list.begin()));
-	// 	ft_list.erase(++(++ft_list.begin()));
+		stl_list.erase(++(++stl_list.begin()));
+		ft_list.erase(++(++ft_list.begin()));
 
-	// 	compareListAttribues(fs, stl_list, ft_list);
-	// 	compareListAttribues(fs, stl_copy_list, ft_copy_list);
-	// 	two = (!(stl_list > stl_copy_list) && !(ft_list > ft_copy_list));
+		compareListAttribues(fs, stl_list, ft_list);
+		compareListAttribues(fs, stl_copy_list, ft_copy_list);
+		two = (!(stl_list > stl_copy_list) && !(ft_list > ft_copy_list));
 
-	// 	stl_list.erase(stl_list.begin());
-	// 	ft_list.erase(ft_list.begin());
+		stl_list.erase(stl_list.begin());
+		ft_list.erase(ft_list.begin());
 
-	// 	compareListAttribues(fs, stl_list, ft_list);
-	// 	compareListAttribues(fs, stl_copy_list, ft_copy_list);
-	// 	three = ((stl_list > stl_copy_list) && (ft_list > ft_copy_list));
+		compareListAttribues(fs, stl_list, ft_list);
+		compareListAttribues(fs, stl_copy_list, ft_copy_list);
+		three = ((stl_list > stl_copy_list) && (ft_list > ft_copy_list));
 
-	// 	printResult(one && two && three);
-	// 	fs.close();
-	// }
+		printResult(one && two && three);
+		fs.close();
+	}
 
-	// /*OPERATOR>=*/
-	// {
-	// 	std::list<int> stl_list;
-	// 	ft::list<int> ft_list;
-	// 	bool one=false, two=false, three=false;
+	/*OPERATOR>=*/
+	{
+		std::list<int> stl_list;
+		ft::list<int> ft_list;
+		bool one=false, two=false, three=false;
 
-	// 	for (size_t i = 0; i < 100; ++i) {
-	// 		stl_list.push_back(i);
-	// 		ft_list.push_back(i);
-	// 	}
+		for (size_t i = 0; i < 100; ++i) {
+			stl_list.push_back(i);
+			ft_list.push_back(i);
+		}
 
-	// 	std::list<int> stl_copy_list(stl_list);
-	// 	ft::list<int> ft_copy_list(ft_list);
+		std::list<int> stl_copy_list(stl_list);
+		ft::list<int> ft_copy_list(ft_list);
 
-	// 	stl_copy_list.erase(++(++stl_copy_list.begin()));
-	// 	ft_copy_list.erase(++(++ft_copy_list.begin()));
+		stl_copy_list.erase(++(++stl_copy_list.begin()));
+		ft_copy_list.erase(++(++ft_copy_list.begin()));
 
-	// 	fs.open("./test/list_output/operator>=", std::fstream::in | std::fstream::out | std::fstream::trunc);
-	// 	compareListAttribues(fs, stl_list, ft_list);
-	// 	compareListAttribues(fs, stl_copy_list, ft_copy_list);
-	// 	one = (!(stl_list >= stl_copy_list) && !(ft_list >= ft_copy_list));
+		fs.open("./test/list_output/operator>=", std::fstream::in | std::fstream::out | std::fstream::trunc);
+		compareListAttribues(fs, stl_list, ft_list);
+		compareListAttribues(fs, stl_copy_list, ft_copy_list);
+		one = (!(stl_list >= stl_copy_list) && !(ft_list >= ft_copy_list));
 
-	// 	stl_list.erase(++(++stl_list.begin()));
-	// 	ft_list.erase(++(++ft_list.begin()));
+		stl_list.erase(++(++stl_list.begin()));
+		ft_list.erase(++(++ft_list.begin()));
 
-	// 	compareListAttribues(fs, stl_list, ft_list);
-	// 	compareListAttribues(fs, stl_copy_list, ft_copy_list);
-	// 	two = ((stl_list >= stl_copy_list) && (ft_list >= ft_copy_list));
+		compareListAttribues(fs, stl_list, ft_list);
+		compareListAttribues(fs, stl_copy_list, ft_copy_list);
+		two = ((stl_list >= stl_copy_list) && (ft_list >= ft_copy_list));
 
-	// 	stl_list.erase(stl_list.begin());
-	// 	ft_list.erase(ft_list.begin());
+		stl_list.erase(stl_list.begin());
+		ft_list.erase(ft_list.begin());
 
-	// 	compareListAttribues(fs, stl_list, ft_list);
-	// 	compareListAttribues(fs, stl_copy_list, ft_copy_list);
-	// 	three = ((stl_list >= stl_copy_list) && (ft_list >= ft_copy_list));
+		compareListAttribues(fs, stl_list, ft_list);
+		compareListAttribues(fs, stl_copy_list, ft_copy_list);
+		three = ((stl_list >= stl_copy_list) && (ft_list >= ft_copy_list));
 
-	// 	printResult(one && two && three);
+		printResult(one && two && three);
 
-	// 	fs.close();
-	// }
-	std::cout << RED << " NO WORK" << RESET;
+		fs.close();
+	}
 	std::cout << std::endl;
 
 	std::cout << "Random:";

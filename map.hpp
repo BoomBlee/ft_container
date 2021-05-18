@@ -1,7 +1,6 @@
 #pragma once
 
-// #include <utility>
-#include <bits/stl_pair.h>
+#include <utility>
 #include "iterator.hpp"
 
 namespace ft {
@@ -32,13 +31,13 @@ template < class Key,											// map::key_type
 
 		allocator_type			_alloc;
 		alloc_node				_node_alloc;
-		node_map<value_type>*	_map;
-		node_map<value_type>*	_first;
-		node_map<value_type>*	_last;
+		node_map<key_type, mapped_type>*	_map;
+		node_map<key_type, mapped_type>*	_first;
+		node_map<key_type, mapped_type>*	_last;
 		size_type				_size;
 		key_compare				_comp;
 
-		void	_create_first_node(mapped_type& val) {
+		void	_create_first_node(key_type& key = key_type(), mapped_type& val = mapped_type()) {
 			_map = _node_alloc.allocate(1);
 			_map->value = _alloc.allocate(1);
 			_alloc.construct(_map->value, val);

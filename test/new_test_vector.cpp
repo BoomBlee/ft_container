@@ -562,7 +562,7 @@ void test_vector() {
 		printResult(one && two && three && four);
 	}
 
-	/*OPERATOR []*/ //NOWORK
+	/*OPERATOR []*/
 	{
 		std::list<int> lst;
 		lst.push_back(765);
@@ -580,8 +580,8 @@ void test_vector() {
 
 		compareVectorAttribues(fs, stl_vector, ft_vector);
 		printResult(equalBool(stl_it[0], ft_it[0]) && equalBool(stl_it[1], ft_it[1]) && equalBool(stl_it[2], ft_it[2]) && equalBool(stl_it[3], ft_it[3]));
-		fs << "stl_value : " << stl_it[0] << " " << stl_it[1] << " " << stl_it[2] << " " << stl_it[3] << std::endl;
-		fs << "ft_value : " << ft_it[0] << " " << ft_it[1] << " " << ft_it[2] << " " << ft_it[3] << std::endl;
+		fs << "stl_value : " << stl_it[0] << " " << stl_it[1] << " " << stl_it[2] << " " << stl_it[3] << " " << stl_it[4] << std::endl;
+		fs << "ft_value : " << ft_it[0] << " " << ft_it[1] << " " << ft_it[2] << " " << ft_it[3] << " " << ft_it[4] << std::endl;
 
 		fs.close();
 	}
