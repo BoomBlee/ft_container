@@ -3,8 +3,8 @@
 #include <iostream>
 #include <iterator>
 
-#define RED true
-#define BLACK false
+#define IS_RED true
+#define IS_BLACK false
 
 template<typename T>
 struct Node {
@@ -17,8 +17,7 @@ public:
 template<typename Key, typename T>
 struct node_map {
 public:
-	Key					key;
-	T					value;
+	std::pair<Key, T>	pair;
 	node_map*			parent;
 	node_map*			left;
 	node_map*			right;
@@ -149,6 +148,19 @@ namespace ft {
 		T& operator*() const {return *_p->value;}
 		T* operator->() const {return _p->value;}
 		reverse_iter_list& operator=(const Node<T>& element) {_p = element; return *this;}
+	};
+
+	template<typename Key, typename T>
+	class iter_map
+	{
+	private:
+		typedef node_map<Key, T>*	node;
+	public:
+		node	_p;
+		iter_map() : _p(0) {};
+		iter_map(node n) : _p(n) {};
+		~iter_map() {};
+		T& operator*() const {return _p->pair.second;}
 	};
 
 }

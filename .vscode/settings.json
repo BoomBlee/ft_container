@@ -74,7 +74,9 @@
 		"cinttypes": "cpp",
 		"__tree": "cpp",
 		"iomanip": "cpp",
-		"stack": "cpp"
+		"stack": "cpp",
+		"__cxx_version": "cpp",
+		"filesystem": "cpp"
 	},
 	"lldb.displayFormat": "auto",
 	"lldb.showDisassembly": "always",
