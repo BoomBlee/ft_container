@@ -21,7 +21,7 @@ public:
 	node_map*			parent;
 	node_map*			left;
 	node_map*			right;
-	bool				is_red;
+	bool				color;
 };
 
 template <class Category, class T, class Distance = std::ptrdiff_t, class Pointer = T*, class Reference = T&>
@@ -160,7 +160,15 @@ namespace ft {
 		iter_map() : _p(0) {};
 		iter_map(node n) : _p(n) {};
 		~iter_map() {};
-		T& operator*() const {return _p->pair.second;}
+		T& operator*() const {return _p->pair;}
+		T* operator->() const {return _p->pair;}
+		bool operator==(const iter_map<Key, T> &obj) const {return this->_p == obj._p;}
+		bool operator!=(const iter_map<Key, T> &obj) const {return this->_p != obj._p;}
+		iter_map& operator++() {}
+		iter_map operator++(int) {iter_map<Key, T> tmp(*this); ; return tmp;}
+		iter_map& operator--() {}
+		iter_map operator--(int) {iter_map<Key, T> tmp(*this); ; return tmp;}
+		iter_map& operator=(const node_map<Key, T>& element) {_p = element; return *this;}
 	};
 
 }
