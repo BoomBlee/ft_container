@@ -279,25 +279,25 @@ template < class Key,											// map::key_type
 			}
 		}
 
-		void _del_black_node_without_child(node n) {
-			// select balance
+		void _balance_black_node_without_child(node n) {
+			// select balance //no
 			_node_alloc.deallocate(n, 1);
 		}
 
-		void _balance_rb1(node n) {
-			if (n->parent->right == n) {
-				ft::swap(n->parent->color, n->parent->left->color);
+		void _balance_rb1(node del) {
+			if (n->parent->right == del) {
+				ft::swap(del->parent->color, del->parent->left->color);
 			}
 			else {
-				ft::swap(n->parent->color, n->parent->right->color);
+				ft::swap(del->parent->color, del->parent->right->color);
 			}
 		}
 
-		void _balance_rb2(node n) {
+		void _balance_rb2(node del) {
 			node p = n->parent;
 			node b;
 
-			if (p->right == n) {
+			if (p->right == del) {
 				b = p->left;
 				p->left = b->right;
 				b->right->parent = p;
@@ -321,8 +321,117 @@ template < class Key,											// map::key_type
 			}
 		}
 
-		void _balance_br3(node n) {
-			
+		void _balance_br3(node del) {
+			node p = del->parent;
+			node b;
+			node n; // nephew
+
+			if (p->right == del) {
+				b = p->left;
+				n = b->right;
+				b->right = p;
+				b->parent = p->parent;
+				p->parent = b;
+				n->parent = p;
+				p->left = n;
+			}
+			else {
+				b = p->right;
+				n = b->left;
+				b->left = p;
+				b->parent = p->parent;
+				p->parent = b;
+				n->parent = p;
+				p->right = n;
+			}
+		}
+
+		void _balance_br4(node del) {
+			node p = del->parent;
+			node b;
+			node n; // nephew
+			node gn;// grandnephew
+
+			if (p->right == del) {
+				b = p->left;
+				n = b->right;
+				gn = n->left;
+				n->right->parent = p;
+				p->left = n->right;
+				b->right = gn;
+				gn->parent = b;
+				gn->color = IS_BLACK;
+				n->left = b;
+				n->right = p;
+				n->parent = p->parent;
+				b->parent = n;
+				p->parent = n;
+			}
+			else {
+				b = p->right;
+				n = b->left;
+				gn = n->right;
+				n->left->parent = p;
+				p->right = n->left;
+				b->left = gn;
+				gn->parent = b;
+				gn->color = IS_BLACK;
+				n->right= b;
+				n->left = p;
+				n->parent = p->parent;
+				b->parent = n;
+				p->parent = n;
+			}
+		}
+
+		void _balance_bb5(node del) {
+			node p = del->parent;
+			node b;
+			node n;
+			node gn;
+
+			if (p->right == del) {
+				b = p->left;
+				n = b->right;
+				gn = n->left;
+				n->right->parent = p;
+				p->left = n->right;
+				b->right = gn;
+				gn->parent = b;
+				n->left = b;
+				n->right = p;
+				n->parent = p->parent;
+				b->parent = n;
+				p->parent = n;
+				n->color = IS_BLACK;
+			}
+			else {
+				b = p->right;
+				n = b->left;
+				gn = n->right;
+				n->left->parent = p;
+				p->right = n->left;
+				b->left = gn;
+				gn->parent = b;
+				n->right= b;
+				n->left = p;
+				n->parent = p->parent;
+				b->parent = n;
+				p->parent = n;
+				n->color = IS_BLACK;
+			}
+		}
+
+		void _balance_bb6(node del) {
+			node p = del->parent;
+
+			if (p->right == del) {
+				p->left->color = IS_RED;
+			}
+			else {
+				p->right->color = IS_RED;
+			}
+			_balance_black_node_without_child(p);
 		}
 
 	public:
