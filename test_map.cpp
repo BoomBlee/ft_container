@@ -56,7 +56,7 @@ int main() {
 		// it.operator*();
 		std::pair<int, int> p = *(++it);
 		// for (; it != mapp.end(); ++it) {
-			std::cout << mapp[60] << std::endl;
+		// 	std::cout << mapp[60] << std::endl;
 		// }
 	}
 
@@ -82,6 +82,93 @@ int main() {
 		ft_map.insert(std::pair<int, int>(80, 80));
 		ft_map.insert(std::pair<int, int>(27, 27));
 		ft_map.insert(std::pair<int, int>(100, 100));
+	}
+
+	{
+		ft::map<int, int> ft_map;
+		ft_map.insert(std::pair<int, int>(40, 40));
+		ft_map.insert(std::pair<int, int>(60, 60));
+		ft_map.insert(std::pair<int, int>(30, 30));
+		ft_map.insert(std::pair<int, int>(25, 25));
+		ft_map.insert(std::pair<int, int>(80, 80));
+		ft_map.insert(std::pair<int, int>(27, 27));
+		ft_map.insert(std::pair<int, int>(100, 100));
+
+		ft::map<int, int>::iterator it = ft_map.begin();
+		for (ft::map<int, int>::iterator ite = ft_map.end(); it != ite; ++it) {
+			std::cout << it._p->pair.second << std::endl;
+		}
+	}
+
+	{
+		std::cout << "erase RED2 max_left" << std::endl;
+
+		ft::map<int, int> ft_map;
+		ft_map.insert(std::pair<int, int>(40, 40));
+		ft_map.insert(std::pair<int, int>(50, 50));
+		ft_map.insert(std::pair<int, int>(30, 30));
+		ft_map.insert(std::pair<int, int>(25, 25));
+		ft_map.insert(std::pair<int, int>(10, 10));
+		ft_map.insert(std::pair<int, int>(20, 20));
+
+		ft::map<int, int>::iterator it = ft_map.begin();
+		for (ft::map<int, int>::iterator ite = ft_map.end(); it != ite; ++it) {
+			std::cout << it._p->pair.second << std::endl;
+		}
+		it = ft_map.begin();
+		for (ft::map<int, int>::iterator ite = ft_map.end(); it != ite; ++it) {
+			if (it._p->pair.first == 25) {
+				std::cout << "found it=" << it._p->pair.first << std::endl;
+				break ;
+			}
+		}
+	
+
+		ft_map.erase(it);
+		it = ft_map.begin();
+		for (ft::map<int, int>::iterator ite = ft_map.end(); it != ite; ++it) {
+			std::cout << it._p->pair.second << std::endl;
+		}
+
+	}
+
+	{
+		std::cout << "erase BLACK2 max_left" << std::endl;
+
+		ft::map<int, int> ft_map;
+		ft_map.insert(std::pair<int, int>(50, 50));
+		ft_map.insert(std::pair<int, int>(40, 40));
+		ft_map.insert(std::pair<int, int>(60, 60));
+		ft_map.insert(std::pair<int, int>(55, 55));
+		ft_map.insert(std::pair<int, int>(80, 80));
+		ft_map.insert(std::pair<int, int>(70, 70));
+		ft_map.insert(std::pair<int, int>(75, 75));
+		ft_map.insert(std::pair<int, int>(90, 90));
+		ft_map.insert(std::pair<int, int>(85, 85));
+		ft_map.insert(std::pair<int, int>(200, 200));
+		ft_map.insert(std::pair<int, int>(250, 250));
+		ft_map.insert(std::pair<int, int>(300, 300));
+		ft_map.insert(std::pair<int, int>(77, 77));
+
+		ft::map<int, int>::iterator it = ft_map.begin();
+		for (ft::map<int, int>::iterator ite = ft_map.end(); it != ite; ++it) {
+			std::cout << it._p->pair.second << std::endl;
+		}
+		it = ft_map.begin();
+		for (ft::map<int, int>::iterator ite = ft_map.end(); it != ite; ++it) {
+			if (it._p->pair.first == 85) {
+				std::cout << "found it=" << it._p->pair.first << std::endl;
+				break ;
+			}
+		}
+	
+
+		ft_map.erase(it);
+		it = ft_map.begin();
+		for (ft::map<int, int>::iterator ite = ft_map.end(); it != ite; ++it) {
+			std::cout << it._p->pair.second << std::endl;
+		}
+
 	}
 	return 0;
 }

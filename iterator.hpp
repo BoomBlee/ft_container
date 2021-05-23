@@ -164,11 +164,47 @@ namespace ft {
 		T* operator->() const {return _p->pair;}
 		bool operator==(const iter_map<Key, T> &obj) const {return this->_p == obj._p;}
 		bool operator!=(const iter_map<Key, T> &obj) const {return this->_p != obj._p;}
-		iter_map& operator++() {}
-		iter_map operator++(int) {iter_map<Key, T> tmp(*this); ; return tmp;}
-		iter_map& operator--() {}
-		iter_map operator--(int) {iter_map<Key, T> tmp(*this); ; return tmp;}
+		iter_map& operator++() {
+			if (_p->right) {
+				_p = _p->right;
+				while (_p->left) {
+					_p = _p->left;
+				}
+			}
+			else {
+				while (_p->parent && _p->parent->pair.first < _p->pair.first) {
+					_p = _p->parent;
+				}
+				_p = _p->parent;
+			}
+			return *this;
+		}
+		iter_map operator++(int) {iter_map<Key, T> tmp(*this); operator++(); return tmp;}
+		iter_map& operator--() {
+			if (_p->left) {
+				_p = _p->left;
+				while (_p->right) {
+					_p = _p->right;
+				}
+			}
+			else {
+				while (_p->parent && _p->parent->pair.first > _p->pair.first) {
+					_p = _p->parent;
+				}
+				_p = _p->parent;
+			}
+		}
+		iter_map operator--(int) {iter_map<Key, T> tmp(*this); operator--(); return tmp;}
 		iter_map& operator=(const node_map<Key, T>& element) {_p = element; return *this;}
+	};
+
+
+	template <typename T>
+	void	swap(T &x, T &y)
+	{
+		T tmp = x;
+		x = y;
+		y = tmp;
 	};
 
 }
