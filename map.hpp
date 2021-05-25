@@ -47,9 +47,9 @@ template < class Key,											// map::key_type
 			return new_node;
 		}
 
-		iterator _search_node(const value_type& val) {
+		iterator _search_node(const key_type& key) {
 			for (iterator it = begin(); it != end(); ++it) {
-				if (it._p->pair.first == val.first) {
+				if (it._p->pair.first == key) {
 					return it;
 				}
 			}
@@ -160,6 +160,13 @@ template < class Key,											// map::key_type
 				return g->left;
 		}
 
+		node _brother(node n) {
+			if (_right_child(n)) {
+				return n->parent->left;
+			}
+			return n->parent->right;
+		}
+
 		void _del_max_left(node n) {
 			node del = n->left;
 
@@ -169,40 +176,9 @@ template < class Key,											// map::key_type
 
 			ft::swap(n, del);
 			ft::swap(n->color, del->color);
+			ft::swap(n->pair, del->pair);
 
-			// select delete
-
-
-			// // swap->parent->right = swap->left;
-			// if (swap->left)
-			// 	swap->left->parent = swap->parent;
-			// if (swap->right)
-			// 	swap->parent->right = swap->right;
-			// else
-			// 	swap->parent->right = swap->left;
-
-			// swap->color = n->color;
-			// swap->left = n->left;
-			// swap->right = n->right;
-			// swap->parent = n->parent;
-
-
-			// n->left->parent = swap;
-			// n->right->parent = swap;
-
-			// // ft::swap(n, swap);
-			// if (n->parent->pair.first < n->pair.first) {
-			// 	n->parent->right = swap;
-			// }
-			// else
-			// 	n->parent->left = swap;
-			// n->parent = swap->parent;
-			// if (swap->left)
-
-			// // n->left = swap->left;
-			// // n->right = swap->right;
-			// _node_alloc.deallocate(n, 1);
-			// n = NULL;
+			_select_delete(n);
 		}
 
 		void _del_min_right(node n) {
@@ -212,60 +188,25 @@ template < class Key,											// map::key_type
 				swap = swap->left;
 			}
 
-			ft::swap(n, del);
-			ft::swap(n->color, del->color);
+			ft::swap(n, swap);
+			ft::swap(n->color, swap->color);
+			ft::swap(n->pair, swap->pair);
 
-
-			// swap->parent->left = swap->right;
-
-			// swap->color = n->color;
-			// swap->left = n->left;
-			// swap->right = n->right;
-			// swap->parent = n->parent;
-
-			// n->left->parent = swap;
-			// n->right->parent = swap;
-			
-			// _node_alloc.deallocate(n, 1);
+			_select_delete(n);
 		}
 
-		// void _del_red_node(node n) {
-		// 	if (n->left) {
-		// 		if (n->left->right) {
-		// 			_del_red_max_left(n);
-		// 		}
-		// 		else {
-		// 			_del_red_min_right(n);
-		// 		}
-		// 	}
-		// 	else {
-				
-		// 	}
-		// }
-
-		// void _del_black_node(node n) {
-		// 	if (n->left) {
-		// 		if (n->left->right) {
-		// 			_del_red_max_left(n);
-		// 		}
-		// 		else {
-		// 			_del_red_min_right(n);
-		// 		}
-		// 	}
-		// 	else {
-				
-		// 	}
-		// }
-
+		bool _right_child(node n) {
+			return n->parent->right == n;
+		}
 
 		void _del_red_node_without_child(node n) {
-			if (n->parent->right == n) {
+			if (_right_child(n)) {
 				n->parent->right = NULL;
 			}
 			else {
 				n->parent->left = NULL;
 			}
-			_node_alloc.deallocate(n, 1);
+			// _node_alloc.deallocate(n, 1);
 		}
 
 		void _del_black_node_with_one_child(node n) {
@@ -280,12 +221,80 @@ template < class Key,											// map::key_type
 		}
 
 		void _balance_black_node_without_child(node n) {
-			// select balance //no
-			_node_alloc.deallocate(n, 1);
+			if (!n->parent) {
+				return ;
+			}
+
+			if (n->parent->color == IS_RED) {
+				_balance_black_node_without_child_parent_red(n);
+			}
+			else {
+				_balance_black_node_without_child_parent_black(n);
+			}
+		}
+
+		void _balance_black_node_without_child_parent_red(node n) {
+			node b = _brother(n);
+
+			if (b == IS_BLACK && b->left->color == IS_BLACK && b->right->color == IS_BLACK) {
+				_balance_rb1(n);
+			}
+			else if (b == IS_BLACK && (b->left->color == IS_RED || b->right->color == IS_RED)) {
+				_balance_rb2(n);
+			}
+		}
+
+		void _balance_black_node_without_child_parent_black(node n) {
+			node b = _brother(n);
+
+			if (b->color == IS_RED) {
+				_balance_brother_red(n, b);
+			}
+			else {
+				_balance_brother_black(n, b);
+			}
+		}
+
+		void _balance_brother_red(node n, node b) {
+			if (_right_child(n)) {
+				if (b->right->left->color == IS_RED) {
+					_balance_br4(n);
+				}
+				else {
+					_balance_br3(n);
+				}
+			}
+			else {
+				if (b->left->right->color == IS_RED) {
+					_balance_br4(n);
+				}
+				else {
+					_balance_br3(n);
+				}
+			}
+		}
+
+		void _balance_brother_black(node n, node b) {
+			if (_right_child(n)) {
+				if (b->right && b->right->color == IS_RED) {
+					_balance_bb5(n);
+				}
+				else {
+					_balance_bb6(n);
+				}
+			}
+			else {
+				if (b->left && b->left->color == IS_RED) {
+					_balance_bb5(n);
+				}
+				else {
+					_balance_bb6(n);
+				}
+			}
 		}
 
 		void _balance_rb1(node del) {
-			if (n->parent->right == del) {
+			if (_right_child(del)) {
 				ft::swap(del->parent->color, del->parent->left->color);
 			}
 			else {
@@ -294,10 +303,10 @@ template < class Key,											// map::key_type
 		}
 
 		void _balance_rb2(node del) {
-			node p = n->parent;
+			node p = del->parent;
 			node b;
 
-			if (p->right == del) {
+			if (_right_child(del)) {
 				b = p->left;
 				p->left = b->right;
 				b->right->parent = p;
@@ -326,7 +335,7 @@ template < class Key,											// map::key_type
 			node b;
 			node n; // nephew
 
-			if (p->right == del) {
+			if (_right_child(del)) {
 				b = p->left;
 				n = b->right;
 				b->right = p;
@@ -348,12 +357,11 @@ template < class Key,											// map::key_type
 
 		void _balance_br4(node del) {
 			node p = del->parent;
-			node b;
+			node b = _brother(del);
 			node n; // nephew
 			node gn;// grandnephew
 
-			if (p->right == del) {
-				b = p->left;
+			if (_right_child(del)) {
 				n = b->right;
 				gn = n->left;
 				n->right->parent = p;
@@ -368,7 +376,6 @@ template < class Key,											// map::key_type
 				p->parent = n;
 			}
 			else {
-				b = p->right;
 				n = b->left;
 				gn = n->right;
 				n->left->parent = p;
@@ -386,12 +393,11 @@ template < class Key,											// map::key_type
 
 		void _balance_bb5(node del) {
 			node p = del->parent;
-			node b;
+			node b = _brother(del);
 			node n;
 			node gn;
 
-			if (p->right == del) {
-				b = p->left;
+			if (_right_child(del)) {
 				n = b->right;
 				gn = n->left;
 				n->right->parent = p;
@@ -406,7 +412,6 @@ template < class Key,											// map::key_type
 				n->color = IS_BLACK;
 			}
 			else {
-				b = p->right;
 				n = b->left;
 				gn = n->right;
 				n->left->parent = p;
@@ -423,15 +428,43 @@ template < class Key,											// map::key_type
 		}
 
 		void _balance_bb6(node del) {
-			node p = del->parent;
+			node b = _brother(del);
 
-			if (p->right == del) {
-				p->left->color = IS_RED;
+			b->color = IS_RED;
+			_balance_black_node_without_child(del->parent);
+		}
+
+
+		void _select_delete(node del) {
+			if (del->color == IS_RED) {
+				if (del->left && del->right) {
+					if (del->left->right) {
+						_del_max_left(del);
+					}
+					else {
+						_del_min_right(del);
+					}
+				}
+				else {
+					_del_red_node_without_child(del);
+				}
 			}
 			else {
-				p->right->color = IS_RED;
+				if (del->left && del->right) {
+					if (del->left->right) {
+						_del_max_left(del);
+					}
+					else {
+						_del_min_right(del);
+					}
+				}
+				else if (del->left || del->right) {
+					_del_black_node_with_one_child(del);
+				}
+				else {
+					_balance_black_node_without_child(del);
+				}
 			}
-			_balance_black_node_without_child(p);
 		}
 
 	public:
@@ -470,6 +503,14 @@ template < class Key,											// map::key_type
 		size_type max_size() const {return _node_alloc.max_size();}
 
 	/* Element access */
+		mapped_type& operator[] (const key_type& k) {
+			for (iterator it = begin(); it != end(); ++it) {
+				if (it._p->pair.first == key) {
+					return it._p->pair.second;
+				}
+			}
+			return NULL;
+		}
 
 	/* Modifiers */
 		std::pair<iterator, bool> insert (const value_type& val) {
@@ -479,8 +520,8 @@ template < class Key,											// map::key_type
 				++_size;
 				return std::make_pair(iterator(_map), true);
 			}
-			else if (_search_node(val) != NULL) {
-				iterator it = _search_node(val);
+			else if (_search_node(val.first) != NULL) {
+				iterator it = _search_node(val.first);
 				it._p->pair.second = val.second;
 				return std::make_pair(it, false);
 			}
@@ -500,29 +541,69 @@ template < class Key,											// map::key_type
 		}
 
 		void erase (iterator position) {
-			// if (position._p->color == IS_RED) {
-			// 	_del_red_node(position._p);
-			// }
-			// else {
-			// 	_del_black_node(position._p);
-			// }
+			node del = position._p;
 
-			node n = position._p;
-			if (n->left) {
-				if (n->left->right) {
-					_del_max_left(n);
-				}
-				else {
-					_del_min_right(n);
-				}
+			if (!del)
+				return ;
+
+			_select_delete(del);
+
+			--_size;
+			_node_alloc.deallocate(del, 1);
+		}
+
+		size_type erase(const key_type& k) {
+			iterator it = _search_node(k);
+
+			if (it) {
+				erase(it);
+				return 1;
 			}
-			else {}
+			return 0;
+		}
 
+		void erase(iterator first, iterator last) {
+			for (iterator it = first; it != last; ++it) {
+				erase(it);
+			}
+		}
+
+		void swap(map& x) {
+			ft::swap(x, this);
+		}
+
+		void clear() {
+			for (iterator it = begin(); it != end(); ++it) {
+				erase(it);
+			}
 		}
 
 	/* Operations */
+		iterator find(const key_type& k) {
+			iterator it = begin()
+			for (iterator ite = end(); it != ite; ++it) {
+				if (it._p->pair.first == key) {
+					break ;
+				}
+			}
+			return it;
+		}
 
+		const_iterator find(const key_type& k) {
+			const_iterator it = begin()
+			for (const_iterator ite = end(); it != ite; ++it) {
+				if (it._p->pair.first == key) {
+					break ;
+				}
+			}
+			return it;
+		}
 
+		size_type count(const key_type& k) const {
+			if (_search_node(k))
+				return 1;
+			return 0;
+		}
 
 	};
 }
