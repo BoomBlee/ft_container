@@ -74,9 +74,9 @@ static bool compareVectorAttribues(std::fstream& fs, std::vector<T>& stl_vect, f
 
 	fs << "------------------------------" << std::endl;
 
-	if (empty && size && max_size && content)
+	if (empty && size && max_size && content && capacity)
 		return true;
-	else if (empty && size && !max_size && content)
+	else if (empty && size && !max_size && content && capacity)
 		costil_vector = true;
 	return false;
 }

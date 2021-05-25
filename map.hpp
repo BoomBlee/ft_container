@@ -505,7 +505,7 @@ template < class Key,											// map::key_type
 	/* Element access */
 		mapped_type& operator[] (const key_type& k) {
 			for (iterator it = begin(); it != end(); ++it) {
-				if (it._p->pair.first == key) {
+				if (it._p->pair.first == k) {
 					return it._p->pair.second;
 				}
 			}
@@ -580,30 +580,29 @@ template < class Key,											// map::key_type
 
 	/* Operations */
 		iterator find(const key_type& k) {
-			iterator it = begin()
+			iterator it = begin();
 			for (iterator ite = end(); it != ite; ++it) {
-				if (it._p->pair.first == key) {
+				if (it._p->pair.first == k) {
 					break ;
 				}
 			}
 			return it;
 		}
 
-		const_iterator find(const key_type& k) {
-			const_iterator it = begin()
-			for (const_iterator ite = end(); it != ite; ++it) {
-				if (it._p->pair.first == key) {
-					break ;
-				}
-			}
-			return it;
-		}
+		// const_iterator find(const key_type& k) {
+		// 	const_iterator it = begin();
+		// 	for (const_iterator ite = end(); it != ite; ++it) {
+		// 		if (it._p->pair.first == k) {
+		// 			break ;
+		// 		}
+		// 	}
+		// 	return it;
+		// }
 
 		size_type count(const key_type& k) const {
 			if (_search_node(k))
 				return 1;
 			return 0;
 		}
-
 	};
 }

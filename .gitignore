@@ -41,3 +41,7 @@ test/list_output
 test/list_output/*
 test/vector_output
 test/vector_output/*
+test/map_output
+test/map_output/*
+
+ft_containers
