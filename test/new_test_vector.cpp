@@ -170,9 +170,9 @@ void test_vector() {
 
 		std::vector<int> stl_copy_vector(stl_vector);
 		ft::vector<int> ft_copy_vector(ft_vector);
-
+	
 		fs.open("./test/vector_output/constructor_copy", std::fstream::in | std::fstream::out | std::fstream::trunc);
-		printResult(compareVectorAttribues(fs, stl_copy_vector, ft_copy_vector));
+		printResult(compareVectorAttribues(fs, stl_copy_vector, ft_copy_vector) && compareVectorAttribues(fs, stl_vector, ft_vector));
 		fs.close();
 	}
 	std::cout << std::endl;

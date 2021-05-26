@@ -179,7 +179,7 @@ namespace ft {
 
 			size_type newCap = _capacity ? _capacity : n;
 			while (_size + n > newCap)
-				newCap = 2 * _size;
+				newCap = 2 * _capacity;
 
 			reserve(newCap);
 			if (_size) {

@@ -20,17 +20,41 @@ int main(int ac, char** av) {
 	short unsigned int count = 0;
 	short unsigned int quantity = 0;
 
-	test_vector();
-	count += getCount_vector();
-	quantity += getQuantity_vector();
-	test_list();
-	count += getCount_list();
-	quantity += getQuantity_list();
-
-	std::cout << CIAN << count << '/' << quantity << RESET << std::endl;
-	if (count == quantity) {
-		printPicture();
+	if (ac == 1) {
+		test_vector();
+		count += getCount_vector();
+		quantity += getQuantity_vector();
+		test_list();
+		count += getCount_list();
+		quantity += getQuantity_list();
+		test_map();
+		count += getCount_map();
+		quantity += getQuantity_map();
+		std::cout << CIAN << count << '/' << quantity << RESET << std::endl;
+		if (count == quantity) {
+			printPicture();
+		}
+		return 0;
 	}
+	while(*(++av)) {
+		if (!std::strcmp(*av, "vector")) {
+			test_vector();
+			count += getCount_vector();
+			quantity += getQuantity_vector();
+		}
+		else if (!std::strcmp(*av, "list")) {
+			test_list();
+			count += getCount_list();
+			quantity += getQuantity_list();
+		}
+		else if (!std::strcmp(*av, "map")) {
+			test_map();
+			count += getCount_map();
+			quantity += getQuantity_map();
+		}
+	}
+	std::cout << CIAN << count << '/' << quantity << RESET << std::endl;
+
 
 	return 0;
 }

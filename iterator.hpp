@@ -17,7 +17,7 @@ public:
 template<typename Key, typename T>
 struct node_map {
 public:
-	std::pair<const Key, T>	pair;
+	std::pair<const Key, T>*	pair;
 	node_map*			parent;
 	node_map*			left;
 	node_map*			right;
@@ -160,10 +160,10 @@ namespace ft {
 		iter_map() : _p(0) {};
 		iter_map(node n) : _p(n) {};
 		~iter_map() {};
-		std::pair<const Key, T>& operator*() const {return _p->pair;}
-		std::pair<const Key, T>* operator->() const {return _p->pair;}
-		bool operator==(const iter_map<Key, T> &obj) const {return this->_p->pair == obj._p->pair;}
-		bool operator!=(const iter_map<Key, T> &obj) const {return this->_p->pair != obj._p->pair;}
+		std::pair<const Key, T>& operator*() const {return *_p->pair;}
+		std::pair<const Key, T>* operator->() const {return *_p->pair;}
+		bool operator==(const iter_map<Key, T> &obj) const {return this->_p == obj._p;}
+		bool operator!=(const iter_map<Key, T> &obj) const {return this->_p != obj._p;}
 		iter_map& operator++() {
 			if (_p->right) {
 				_p = _p->right;
@@ -172,7 +172,7 @@ namespace ft {
 				}
 			}
 			else {
-				while (_p->parent && _p->parent->pair.first < _p->pair.first) {
+				while (_p->parent && _p->parent->pair->first < _p->pair->first) {
 					_p = _p->parent;
 				}
 				_p = _p->parent;
@@ -188,7 +188,7 @@ namespace ft {
 				}
 			}
 			else {
-				while (_p->parent && _p->parent->pair.first > _p->pair.first) {
+				while (_p->parent && _p->parent->pair->first > _p->pair->first) {
 					_p = _p->parent;
 				}
 				_p = _p->parent;
