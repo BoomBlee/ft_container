@@ -276,34 +276,34 @@ void test_map() {
 		bool one = compareMapAttribues(fs, stl_map, ft_map) && equalBool(stl_num, ft_num);
 		fs.close();
 
-		stl_num = stl_map.erase(80);
-		ft_num = ft_map.erase(80);
+		// stl_num = stl_map.erase(80);
+		// ft_num = ft_map.erase(80);
 
-		fs.open("./test/map_output/Erase_2", std::fstream::in | std::fstream::out | std::fstream::trunc);
-		bool two = compareMapAttribues(fs, stl_map, ft_map) && equalBool(stl_num, ft_num);
-		fs.close();
-
-
-		std::map<int, int>::iterator stl_it = stl_map.begin();
-		ft::map<int, int>::iterator ft_it = ft_map.begin();		
-		for (; (*stl_it).first != 90; ++stl_it, ++ft_it);
-
-		stl_map.erase(stl_it);
-		ft_map.erase(ft_it);
-
-		fs.open("./test/map_output/Erase_3", std::fstream::in | std::fstream::out | std::fstream::trunc);
-		bool three = compareMapAttribues(fs, stl_map, ft_map) && equalBool(stl_num, ft_num);
-		fs.close();
-
-		// stl_num = stl_map.erase(50);
-		// ft_num = ft_map.erase(50);
-
-		fs.open("./test/map_output/Erase_4", std::fstream::in | std::fstream::out | std::fstream::trunc);
-		bool four = compareMapAttribues(fs, stl_map, ft_map) && equalBool(stl_num, ft_num);
-		fs.close();
+		// fs.open("./test/map_output/Erase_2", std::fstream::in | std::fstream::out | std::fstream::trunc);
+		// bool two = compareMapAttribues(fs, stl_map, ft_map) && equalBool(stl_num, ft_num);
+		// fs.close();
 
 
-		printResult(one && two && three && four);
+		// std::map<int, int>::iterator stl_it = stl_map.begin();
+		// ft::map<int, int>::iterator ft_it = ft_map.begin();		
+		// for (; (*stl_it).first != 90; ++stl_it, ++ft_it);
+
+		// stl_map.erase(stl_it);
+		// ft_map.erase(ft_it);
+
+		// fs.open("./test/map_output/Erase_3", std::fstream::in | std::fstream::out | std::fstream::trunc);
+		// bool three = compareMapAttribues(fs, stl_map, ft_map) && equalBool(stl_num, ft_num);
+		// fs.close();
+
+		// // stl_num = stl_map.erase(50);
+		// // ft_num = ft_map.erase(50);
+
+		// fs.open("./test/map_output/Erase_4", std::fstream::in | std::fstream::out | std::fstream::trunc);
+		// bool four = compareMapAttribues(fs, stl_map, ft_map) && equalBool(stl_num, ft_num);
+		// fs.close();
+
+
+		// printResult(one && two && three && four);
 
 	}
 	/*ERASE*/

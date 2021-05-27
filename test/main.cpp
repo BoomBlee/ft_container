@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include "test.hpp"
-
+#include <cstring>
 
 void printPicture() {
 	std::ifstream file ("test/coffee.txt",std::ifstream::binary);
@@ -20,7 +20,7 @@ int main(int ac, char** av) {
 	short unsigned int count = 0;
 	short unsigned int quantity = 0;
 
-	if (ac == 1) {
+	if (ac == 10) {
 		test_vector();
 		count += getCount_vector();
 		quantity += getQuantity_vector();

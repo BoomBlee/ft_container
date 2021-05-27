@@ -203,16 +203,35 @@ template < class Key,											// map::key_type
 			while (del->right) {
 				del = del->right;
 			}
-			if (_right_child(n))
-				n->parent->right = del;
-			else
-				n->parent->left = del;
-			ft::swap(del, n);
+			// ft::swap(del, n);
+
+
+			// if (_right_child(n))
+			// 	n->parent->right = del;
+			// else
+			// 	n->parent->left = del;
+			// if (_right_child(del))
+			// 	del->parent->right = n;
+			// else
+			// 	del->parent->left = n;
+
 			// ft::swap(del->left, n->left);
 			// ft::swap(del->right, n->right);
 			// ft::swap(del->parent, n->left);
-			ft::swap(n->color, del->color);
-			ft::swap(n->pair, del->pair);
+			_swap_node(n, del);
+			// if (del->left)
+			// 	del->left->parent = del;
+			// if (del->right)
+			// 	del->right->parent = del;
+			// if (n->left)
+			// 	n->left->parent = n;
+			// if (n->right)
+			// 	n->right->parent = n;
+
+			
+			// ft::swap(n->color, del->color);
+			// ft::swap(n->pair, del->pair);
+			
 			// if (n->parent == del) {
 			// 	n->parent->left = NULL;
 			// }
@@ -232,18 +251,22 @@ template < class Key,											// map::key_type
 				n->parent->left = NULL;
 			}
 			// if (n && !(!n->left && !n->right && !n->parent))
-				n = _delete_node(n);
+				// n = _delete_node(n);
 			// _node_pointer_null(n);
 		}
 
 		void _del_black_node_with_one_child(node n) {
 			if (n->left) {
-				ft::swap(n->left->pair, n->pair); //ft::swap(n->left, n);
-				_del_red_node_without_child(n->left);
+				// ft::swap(n->left->pair, n->pair);
+				// ft::swap(n->left, n);
+				_swap_node(n, n->left);
+				_del_red_node_without_child(n);//n.right
 			}
 			else {
-				ft::swap(n->right->pair, n->pair);
-				_del_red_node_without_child(n->right);
+				// ft::swap(n->right->pair, n->pair);
+				// ft::swap(n->right, n);
+				_swap_node(n, n->right);
+				_del_red_node_without_child(n);
 			}
 		}
 
@@ -259,7 +282,7 @@ template < class Key,											// map::key_type
 				_balance_black_node_without_child_parent_black(n);
 			}
 			// if (n && !(!n->left && !n->right && !n->parent))
-				n = _delete_node(n);
+				// n = _delete_node(n);
 			// _node_pointer_null(n);
 		}
 
@@ -515,6 +538,35 @@ template < class Key,											// map::key_type
 			return NULL;
 		}
 
+		void _swap_node(node& x, node &y) {
+
+			ft::swap(y->parent, x->parent);
+			ft::swap(y->right, x->right);
+			ft::swap(y->left, x->left);
+
+			if (x->parent) {
+				if (_right_child(x))
+					x->parent->right = x;
+				else
+					x->parent->left = x;
+			}
+			if (y->parent) {
+				if (_right_child(y))
+					y->parent->right = y;
+				else
+					y->parent->left = y;
+			}
+
+			if (x->left)
+				x->left->parent = x;
+			if (x->right)
+				x->right->parent = x;
+			if (y->left)
+				y->left->parent = y;
+			if (y->right)
+				y->right->parent = y;
+		}
+
 		void _node_pointer_null(node n) {
 			n->parent = NULL;
 			n->left = NULL;
@@ -616,13 +668,13 @@ template < class Key,											// map::key_type
 		}
 
 		void erase (iterator position) {
-			node del = position._p;
+			// node del = position._p;
 
-			if (!del)
-				return ;
+			// if (!del)
+			// 	return ;
 
-			_select_delete(del);
-			// _delete_node(position._p);
+			_select_delete(position._p);
+			_delete_node(position._p);
 		}
 
 		size_type erase(const key_type& k) {
