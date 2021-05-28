@@ -236,6 +236,11 @@ template < class Key,											// map::key_type
 			// 	n->parent->left = NULL;
 			// }
 
+			if (!del->parent) {
+				_map = del;
+				_map->color = IS_BLACK;
+			}
+
 			_select_delete(n);
 		}
 
@@ -256,17 +261,40 @@ template < class Key,											// map::key_type
 		}
 
 		void _del_black_node_with_one_child(node n) {
+			node p = n->parent;
+			node swap;
 			if (n->left) {
 				// ft::swap(n->left->pair, n->pair);
-				// ft::swap(n->left, n);
-				_swap_node(n, n->left);
-				_del_red_node_without_child(n);//n.right
+
+				// ft::swap(n->left->color, n->color);
+				// // _swap_node(n, n->left);
+				// if (_right_child(n))
+				// 	n->parent->right = n->left;
+				// else
+				// 	n->parent->left = n->left;
+				// n->left->parent = n->parent;
+
+				// _del_red_node_without_child(n);//n.right
+
+
+				swap = n->left;
+				if (_right_child(n))
+					p->right = n->left;
+				else
+					p->left = n->left;
+				ft::swap(swap->color, n->color);
+				ft::swap(swap->parent, n->parent);
 			}
 			else {
 				// ft::swap(n->right->pair, n->pair);
-				// ft::swap(n->right, n);
-				_swap_node(n, n->right);
-				_del_red_node_without_child(n);
+				ft::swap(n->right->color, n->color);
+				// _swap_node(n, n->right);
+				if (_right_child(n))
+					n->parent->right = n->right;
+				else
+					n->parent->left = n->right;
+				n->right->parent = n->parent;
+				// _del_red_node_without_child(n);
 			}
 		}
 
@@ -275,7 +303,7 @@ template < class Key,											// map::key_type
 				return ;
 			}
 
-			if (n->parent->color == IS_RED) {
+			if (n->parent->color == IS_RED || (!n->parent->parent && (!n->parent->left || n->parent->left->color == IS_BLACK) && (!n->parent->right || n->parent->right->color == IS_BLACK))) {
 				_balance_black_node_without_child_parent_red(n);
 			}
 			else {
@@ -349,11 +377,11 @@ template < class Key,											// map::key_type
 		void _balance_rb1(node del) {
 			if (_right_child(del)) {
 				ft::swap(del->parent->color, del->parent->left->color);
-				del->parent->right = NULL;
+				// del->parent->right = NULL;
 			}
 			else {
 				ft::swap(del->parent->color, del->parent->right->color);
-				del->parent->left = NULL;
+				// del->parent->left = NULL;
 			}
 		}
 
@@ -367,16 +395,18 @@ template < class Key,											// map::key_type
 				if (b->right)
 					b->right->parent = p;
 				b->right = p;
-				if (_right_child(p))
-					p->parent->right = b;
-				else
-					p->parent->left = b;
+				if (p->parent) {
+					if (_right_child(p))
+						p->parent->right = b;
+					else
+						p->parent->left = b;
+				}
 				b->parent = p->parent;
 				p->parent = b;
 				p->color = IS_BLACK;
 				b->color = IS_RED;
 				b->left->color = IS_BLACK;
-				p->right = NULL;
+				// p->right = NULL;
 			}
 			else {
 				b = p->right;
@@ -384,21 +414,28 @@ template < class Key,											// map::key_type
 				if (b->left)
 					b->left->parent = p;
 				b->left = p;
-				if (_right_child(p))
-					p->parent->right = b;
-				else
-					p->parent->left = b;
+				if (p->parent) {
+					if (_right_child(p))
+						p->parent->right = b;
+					else
+						p->parent->left = b;
+				}
 				b->parent = p->parent;
 				p->parent = b;
 				p->color = IS_BLACK;
 				b->color = IS_RED;
 				b->right->color = IS_BLACK;
-				p->left = NULL;
+				// p->left = NULL;
+			}
+			if (!b->parent) {
+				_map = b;
+				_map->color = IS_BLACK;
 			}
 		}
 
 		void _balance_br3(node del) {
 			node p = del->parent;
+			node g = _grandparent(del);
 			node b;
 			node n; // nephew
 
@@ -407,6 +444,10 @@ template < class Key,											// map::key_type
 				n = b->right;
 				b->right = p;
 				b->parent = p->parent;
+				if (_right_child(p))
+					g->right = b;
+				else
+					g->left = b;
 				p->parent = b;
 				if (n) {
 					n->parent = p;
@@ -418,6 +459,10 @@ template < class Key,											// map::key_type
 				n = b->left;
 				b->left = p;
 				b->parent = p->parent;
+				if (_right_child(p))
+					g->right = b;
+				else
+					g->left = b;
 				p->parent = b;
 				if (n) {
 					n->parent = p;
@@ -503,12 +548,13 @@ template < class Key,											// map::key_type
 
 			if (b)
 				b->color = IS_RED;
-			_balance_black_node_without_child(del);
+			_balance_black_node_without_child(del->parent);
+			// _select_delete(del);
 		}
 
 
 		void _select_delete(node del) {
-			if (del->color == IS_RED) {
+			if (del->color == IS_RED || (!del->parent && (!del->left || del->left->color == IS_BLACK) && (!del->right || del->right->color == IS_BLACK))) {
 				if (del->left && del->right) {
 					_del_max_left(del);
 				}
@@ -530,6 +576,13 @@ template < class Key,											// map::key_type
 		}
 
 		node _delete_node(node del) {
+			if (del->parent) {
+				if (_right_child(del))
+					del->parent->right = NULL;
+				else
+					del->parent->left = NULL;
+			}
+
 			--_size;
 			_alloc.destroy(del->pair);
 			_alloc.deallocate(del->pair, 1);
@@ -540,22 +593,22 @@ template < class Key,											// map::key_type
 
 		void _swap_node(node& x, node &y) {
 
-			ft::swap(y->parent, x->parent);
-			ft::swap(y->right, x->right);
-			ft::swap(y->left, x->left);
-
 			if (x->parent) {
 				if (_right_child(x))
-					x->parent->right = x;
+					x->parent->right = y;
 				else
-					x->parent->left = x;
+					x->parent->left = y;
 			}
 			if (y->parent) {
 				if (_right_child(y))
-					y->parent->right = y;
+					y->parent->right = x;
 				else
-					y->parent->left = y;
+					y->parent->left = x;
 			}
+
+			ft::swap(y->parent, x->parent);
+			ft::swap(y->right, x->right);
+			ft::swap(y->left, x->left);
 
 			if (x->left)
 				x->left->parent = x;
@@ -698,9 +751,9 @@ template < class Key,											// map::key_type
 		}
 
 		void clear() {
-			for (iterator it = begin(); it != end(); ++it) {
-				erase(it);
-			}
+			// for (iterator it = begin(); it != end(); ++it) {
+			// 	erase(it);
+			// }
 		}
 
 	/* Operations */

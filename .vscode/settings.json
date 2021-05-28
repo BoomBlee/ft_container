@@ -76,7 +76,8 @@
 		"iomanip": "cpp",
 		"stack": "cpp",
 		"__cxx_version": "cpp",
-		"filesystem": "cpp"
+		"filesystem": "cpp",
+		"queue": "cpp"
 	},
 	"lldb.displayFormat": "auto",
 	"lldb.showDisassembly": "always",
