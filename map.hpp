@@ -249,11 +249,16 @@ template < class Key,											// map::key_type
 		}
 
 		void _del_red_node_without_child(node n) {
-			if (_right_child(n)) {
-				n->parent->right = NULL;
+			if (n->parent) {
+				if (_right_child(n)) {
+					n->parent->right = NULL;
+				}
+				else {
+					n->parent->left = NULL;
+				}
 			}
 			else {
-				n->parent->left = NULL;
+				_map = NULL;
 			}
 			// if (n && !(!n->left && !n->right && !n->parent))
 				// n = _delete_node(n);
@@ -278,23 +283,40 @@ template < class Key,											// map::key_type
 
 
 				swap = n->left;
-				if (_right_child(n))
-					p->right = n->left;
-				else
-					p->left = n->left;
+				if (p) {
+					if (_right_child(n))
+						p->right = n->left;
+					else
+						p->left = n->left;
+				}
 				ft::swap(swap->color, n->color);
 				ft::swap(swap->parent, n->parent);
 			}
 			else {
 				// ft::swap(n->right->pair, n->pair);
-				ft::swap(n->right->color, n->color);
-				// _swap_node(n, n->right);
-				if (_right_child(n))
-					n->parent->right = n->right;
-				else
-					n->parent->left = n->right;
-				n->right->parent = n->parent;
+				// ft::swap(n->right->color, n->color);
+				// // _swap_node(n, n->right);
+				// if (_right_child(n))
+				// 	n->parent->right = n->right;
+				// else
+				// 	n->parent->left = n->right;
+				// n->right->parent = n->parent;
 				// _del_red_node_without_child(n);
+
+
+				swap = n->right;
+				if (p) {
+					if (_right_child(n))
+						p->right = n->right;
+					else
+						p->left = n->right;
+				}
+				ft::swap(swap->parent, n->parent);
+				ft::swap(swap->color, n->color);
+			}
+			if (!swap->parent) {
+				_map = swap;
+				_map->color = IS_BLACK;
 			}
 		}
 
@@ -376,13 +398,16 @@ template < class Key,											// map::key_type
 
 		void _balance_rb1(node del) {
 			if (_right_child(del)) {
-				ft::swap(del->parent->color, del->parent->left->color);
+				// ft::swap(del->parent->color, del->parent->left->color);
+				del->parent->left->color = IS_RED;
 				// del->parent->right = NULL;
 			}
 			else {
-				ft::swap(del->parent->color, del->parent->right->color);
+				// ft::swap(del->parent->color, del->parent->right->color);
+				del->parent->right->color = IS_RED;
 				// del->parent->left = NULL;
 			}
+			del->parent->color = IS_BLACK;
 		}
 
 		void _balance_rb2(node del) {
@@ -444,14 +469,17 @@ template < class Key,											// map::key_type
 				n = b->right;
 				b->right = p;
 				b->parent = p->parent;
-				if (_right_child(p))
-					g->right = b;
-				else
-					g->left = b;
+				if (g) {
+					if (_right_child(p))
+						g->right = b;
+					else
+						g->left = b;
+				}
 				p->parent = b;
 				if (n) {
 					n->parent = p;
 					p->left = n;
+					n->color = IS_RED;
 				}
 			}
 			else {
@@ -459,15 +487,22 @@ template < class Key,											// map::key_type
 				n = b->left;
 				b->left = p;
 				b->parent = p->parent;
-				if (_right_child(p))
-					g->right = b;
-				else
-					g->left = b;
+				if (g) {
+					if (_right_child(p))
+						g->right = b;
+					else
+						g->left = b;
+				}
 				p->parent = b;
 				if (n) {
 					n->parent = p;
 					p->right = n;
+					n->color = IS_RED;
 				}
+			}
+			b->color = IS_BLACK;
+			if (!b->parent) {
+				_map = b;
 			}
 		}
 
@@ -505,6 +540,9 @@ template < class Key,											// map::key_type
 				b->parent = n;
 				p->parent = n;
 			}
+			if (!n->parent) {
+				_map = n;
+			}
 		}
 
 		void _balance_bb5(node del) {
@@ -516,10 +554,12 @@ template < class Key,											// map::key_type
 			if (_right_child(del)) {
 				n = b->right;
 				gn = n->left;
-				n->right->parent = p;
+				if (n->right)
+					n->right->parent = p;
 				p->left = n->right;
 				b->right = gn;
-				gn->parent = b;
+				if (gn)
+					gn->parent = b;
 				n->left = b;
 				n->right = p;
 				n->parent = p->parent;
@@ -530,12 +570,19 @@ template < class Key,											// map::key_type
 			else {
 				n = b->left;
 				gn = n->right;
-				n->left->parent = p;
+				if (n->left) {
+					n->left->parent = p;
+				}
 				p->right = n->left;
 				b->left = gn;
-				gn->parent = b;
+				if (gn)
+					gn->parent = b;
 				n->right= b;
 				n->left = p;
+				if (_right_child(p))
+					p->parent->right = n;
+				else
+					p->parent->left = n;
 				n->parent = p->parent;
 				b->parent = n;
 				p->parent = n;
@@ -754,6 +801,10 @@ template < class Key,											// map::key_type
 			// for (iterator it = begin(); it != end(); ++it) {
 			// 	erase(it);
 			// }
+
+			while (begin() != end()) {
+				erase(begin());
+			}
 		}
 
 	/* Operations */
