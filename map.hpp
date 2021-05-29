@@ -643,11 +643,14 @@ template < class Key,											// map::key_type
 
 	/* Element access */
 		mapped_type& operator[] (const key_type& k) {
-			for (iterator it = begin(); it != end(); ++it) {
-				if (it._p->pair->first == k) {
-					return it._p->pair->second;
-				}
-			}
+			// for (iterator it = begin(); it != end(); ++it) {
+			// 	if (it._p->pair->first == k) {
+			// 		return it._p->pair->second;
+			// 	}
+			// }
+			node n = _search_node(k, _map)
+			if (n)
+				return n->pair->second;
 			return NULL;
 		}
 
