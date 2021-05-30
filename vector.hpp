@@ -10,10 +10,10 @@ namespace ft {
 	public:
 		typedef T											value_type;
 		typedef std::allocator<value_type>					allocator_type;
-		typedef typename allocator_type::reference			reference;
-		typedef typename allocator_type::const_reference	const_reference;
-		typedef typename allocator_type::pointer			pointer;
-		typedef typename allocator_type::const_pointer		const_pointer;
+		typedef value_type&									reference;
+		typedef value_type const &							const_reference;
+		typedef value_type*									pointer;
+		typedef value_type const *							const_pointer;
 		typedef typename ft::iter<value_type>				iterator;
 		typedef typename ft::iter<const value_type>			const_iterator;
 		typedef typename ft::reverse_iter<value_type>		reverse_iterator;
@@ -156,7 +156,7 @@ namespace ft {
 		// single element (1)
 		iterator insert (iterator position, const value_type& val) {
 			size_type i=0;
-			for (; _array + i != &(*position); ++i); // search pos
+			for (; _array + i != &(*position); ++i);
 
 			if (_capacity == 0)
 				reserve(1);
@@ -190,7 +190,7 @@ namespace ft {
 			}
 			_size += n;
 			while (n--)
-				_alloc.construct(_array + i + n, val);// check -1
+				_alloc.construct(_array + i + n, val);
 		}
 
 		// range (3)
@@ -324,8 +324,3 @@ namespace ft {
 	void swap(vector<T,Alloc>& x, vector<T,Alloc>& y) {x.swap(y);}
 	
 }
-
-// exception
-// reverse_iterator
-// check iter in function (return)
-// iterator constr copy

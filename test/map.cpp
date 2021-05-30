@@ -800,7 +800,7 @@ void test_map() {
 	}
 
 
-	std::cout << std::endl;
+	std::cout << std::endl << std::endl;
 
 }
 

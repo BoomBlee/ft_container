@@ -109,7 +109,7 @@ template < class Key,														// map::key_type
 				_map->color = IS_BLACK;
 			}
 
-			if (n->color == IS_RED && p && p->color == IS_RED && g && (!u || u->color == IS_BLACK)) { // case 3
+			if (n->color == IS_RED && p && p->color == IS_RED && g && (!u || u->color == IS_BLACK)) {
 				if (g->left == p && p->left == n) {
 					g->left = p->right;
 					if (p->right)
@@ -155,7 +155,7 @@ template < class Key,														// map::key_type
 				g->color =	IS_RED;
 				p->color = IS_BLACK;
 			}
-			else if (n->color == IS_RED && p && p->color == IS_RED && g && u && u->color == IS_RED) { // case 1
+			else if (n->color == IS_RED && p && p->color == IS_RED && g && u && u->color == IS_RED) {
 				p->color = IS_BLACK;
 				u->color = IS_BLACK;
 				if (g->parent) {
@@ -254,7 +254,7 @@ template < class Key,														// map::key_type
 			}
 		}
 
-		void _balance_black_node_without_child(node n) {//TODO
+		void _balance_black_node_without_child(node n) {
 			if (!n->parent) {
 				return ;
 			}

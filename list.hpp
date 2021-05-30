@@ -4,27 +4,16 @@
 
 
 namespace ft {
-
-
-	// template<typename T>
-	// class iter_list : std::iterator<bidirectional_iterator_tag, T> {
-	// private:
-	// 	T*	p;
-	// public:
-	// 	iter_list() {};
-	// 	~iter_list() {};
-	// };
-
 	template<typename T, class Alloc = std::allocator<T> >
 	class list
 	{
 	public:
 		typedef T											value_type;
 		typedef std::allocator<value_type>					allocator_type;
-		typedef typename allocator_type::reference			reference;
-		typedef typename allocator_type::const_reference	const_reference;
-		typedef typename allocator_type::pointer			pointer;
-		typedef typename allocator_type::const_pointer		const_pointer;
+		typedef value_type&									reference;
+		typedef value_type const &							const_reference;
+		typedef value_type*									pointer;
+		typedef value_type const *							const_pointer;
 		typedef typename ft::iter_list<value_type>			iterator;
 		typedef typename ft::const_iter_list<value_type>	const_iterator;
 		typedef typename ft::reverse_iter_list<value_type>				reverse_iterator;

@@ -10,7 +10,7 @@ void printPicture() {
 		size_t size = file.tellg();
 		file.seekg (0);
 		char* coffee = new char[size];
-		file.read (coffee, size - 1);
+		file.read (coffee, size);
 		std::cout << coffee << std::endl;
 		delete [] coffee;
 	}
@@ -20,7 +20,7 @@ int main(int ac, char** av) {
 	short unsigned int count = 0;
 	short unsigned int quantity = 0;
 
-	if (ac == 10) {
+	if (ac == 1) {
 		test_vector();
 		count += getCount_vector();
 		quantity += getQuantity_vector();
@@ -30,6 +30,12 @@ int main(int ac, char** av) {
 		test_map();
 		count += getCount_map();
 		quantity += getQuantity_map();
+		test_stack();
+		count += getCount_stack();
+		quantity += getQuantity_stack();
+		test_queue();
+		count += getCount_queue();
+		quantity += getQuantity_queue();
 		std::cout << CIAN << count << '/' << quantity << RESET << std::endl;
 		if (count == quantity) {
 			printPicture();
@@ -51,6 +57,16 @@ int main(int ac, char** av) {
 			test_map();
 			count += getCount_map();
 			quantity += getQuantity_map();
+		}
+		else if (!std::strcmp(*av, "stack")) {
+			test_stack();
+			count += getCount_stack();
+			quantity += getQuantity_stack();
+		}
+		else if (!std::strcmp(*av, "queue")) {
+			test_queue();
+			count += getCount_queue();
+			quantity += getQuantity_queue();
 		}
 	}
 	std::cout << CIAN << count << '/' << quantity << RESET << std::endl;
