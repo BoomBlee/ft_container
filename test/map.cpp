@@ -443,7 +443,7 @@ void test_map() {
 
 
 	}
-	/*FIND*/
+	/*COUNT*/
 	{
 		std::map<int, int> stl_map;
 		ft::map<int, int> ft_map;
@@ -485,10 +485,137 @@ void test_map() {
 			}
 		}
 
-		fs.open("./test/map_output/find", std::fstream::in | std::fstream::out | std::fstream::trunc);
+		fs.open("./test/map_output/count", std::fstream::in | std::fstream::out | std::fstream::trunc);
 		printResult(res);
 		fs.close();
 	}
+	/*LOWER_BOUND*/
+	{
+		std::map<int, int> stl_map;
+		ft::map<int, int> ft_map;
+
+		ft_map.insert(std::pair<int, int>(50, 51));
+		ft_map.insert(std::pair<int, int>(40, 41));
+		ft_map.insert(std::pair<int, int>(60, 60));
+		ft_map.insert(std::pair<int, int>(55, 55));
+		ft_map.insert(std::pair<int, int>(80, 80));
+		ft_map.insert(std::pair<int, int>(70, 70));
+		ft_map.insert(std::pair<int, int>(75, 75));
+		ft_map.insert(std::pair<int, int>(90, 90));
+		ft_map.insert(std::pair<int, int>(85, 85));
+		ft_map.insert(std::pair<int, int>(200, 200));
+		ft_map.insert(std::pair<int, int>(250, 250));
+		ft_map.insert(std::pair<int, int>(300, 300));
+		ft_map.insert(std::pair<int, int>(77, 77));
+
+		stl_map.insert(std::pair<int, int>(50, 51));
+		stl_map.insert(std::pair<int, int>(40, 41));
+		stl_map.insert(std::pair<int, int>(60, 60));
+		stl_map.insert(std::pair<int, int>(55, 55));
+		stl_map.insert(std::pair<int, int>(80, 80));
+		stl_map.insert(std::pair<int, int>(70, 70));
+		stl_map.insert(std::pair<int, int>(75, 75));
+		stl_map.insert(std::pair<int, int>(90, 90));
+		stl_map.insert(std::pair<int, int>(85, 85));
+		stl_map.insert(std::pair<int, int>(200, 200));
+		stl_map.insert(std::pair<int, int>(250, 250));
+		stl_map.insert(std::pair<int, int>(300, 300));
+		stl_map.insert(std::pair<int, int>(77, 77));
+
+		std::map<int, int>::iterator stl_it = stl_map.lower_bound(80);
+		ft::map<int, int>::iterator ft_it = ft_map.lower_bound(80);
+
+		fs.open("./test/map_output/lower_bound", std::fstream::in | std::fstream::out | std::fstream::trunc);
+		printResult(compareMapAttribues(fs, stl_map, ft_map) && equalBool((*stl_it).second, (*ft_it).second));
+		fs << "stl_value : " << (*stl_it).first << " " << (*stl_it).second << std::endl;
+		fs << "ft_value : " << (*ft_it).first << " " << (*ft_it).second << std::endl;
+		fs.close();
+	}
+	/*UPPER_BOUND*/
+	{
+		std::map<int, int> stl_map;
+		ft::map<int, int> ft_map;
+
+		ft_map.insert(std::pair<int, int>(50, 51));
+		ft_map.insert(std::pair<int, int>(40, 41));
+		ft_map.insert(std::pair<int, int>(60, 60));
+		ft_map.insert(std::pair<int, int>(55, 55));
+		ft_map.insert(std::pair<int, int>(80, 80));
+		ft_map.insert(std::pair<int, int>(70, 70));
+		ft_map.insert(std::pair<int, int>(75, 75));
+		ft_map.insert(std::pair<int, int>(90, 90));
+		ft_map.insert(std::pair<int, int>(85, 85));
+		ft_map.insert(std::pair<int, int>(200, 200));
+		ft_map.insert(std::pair<int, int>(250, 250));
+		ft_map.insert(std::pair<int, int>(300, 300));
+		ft_map.insert(std::pair<int, int>(77, 77));
+
+		stl_map.insert(std::pair<int, int>(50, 51));
+		stl_map.insert(std::pair<int, int>(40, 41));
+		stl_map.insert(std::pair<int, int>(60, 60));
+		stl_map.insert(std::pair<int, int>(55, 55));
+		stl_map.insert(std::pair<int, int>(80, 80));
+		stl_map.insert(std::pair<int, int>(70, 70));
+		stl_map.insert(std::pair<int, int>(75, 75));
+		stl_map.insert(std::pair<int, int>(90, 90));
+		stl_map.insert(std::pair<int, int>(85, 85));
+		stl_map.insert(std::pair<int, int>(200, 200));
+		stl_map.insert(std::pair<int, int>(250, 250));
+		stl_map.insert(std::pair<int, int>(300, 300));
+		stl_map.insert(std::pair<int, int>(77, 77));
+
+		std::map<int, int>::iterator stl_it = stl_map.upper_bound(80);
+		ft::map<int, int>::iterator ft_it = ft_map.upper_bound(80);
+
+		fs.open("./test/map_output/upper_bound", std::fstream::in | std::fstream::out | std::fstream::trunc);
+		printResult(compareMapAttribues(fs, stl_map, ft_map) && equalBool((*stl_it).second, (*ft_it).second));
+		fs << "stl_value : " << (*stl_it).first << " " << (*stl_it).second << std::endl;
+		fs << "ft_value : " << (*ft_it).first << " " << (*ft_it).second << std::endl;
+		fs.close();
+	}
+	/*EQUAL_RANGE*/
+	{
+		std::map<int, int> stl_map;
+		ft::map<int, int> ft_map;
+
+		ft_map.insert(std::pair<int, int>(50, 51));
+		ft_map.insert(std::pair<int, int>(40, 41));
+		ft_map.insert(std::pair<int, int>(60, 60));
+		ft_map.insert(std::pair<int, int>(55, 55));
+		ft_map.insert(std::pair<int, int>(80, 80));
+		ft_map.insert(std::pair<int, int>(70, 70));
+		ft_map.insert(std::pair<int, int>(75, 75));
+		ft_map.insert(std::pair<int, int>(90, 90));
+		ft_map.insert(std::pair<int, int>(85, 85));
+		ft_map.insert(std::pair<int, int>(200, 200));
+		ft_map.insert(std::pair<int, int>(250, 250));
+		ft_map.insert(std::pair<int, int>(300, 300));
+		ft_map.insert(std::pair<int, int>(77, 77));
+
+		stl_map.insert(std::pair<int, int>(50, 51));
+		stl_map.insert(std::pair<int, int>(40, 41));
+		stl_map.insert(std::pair<int, int>(60, 60));
+		stl_map.insert(std::pair<int, int>(55, 55));
+		stl_map.insert(std::pair<int, int>(80, 80));
+		stl_map.insert(std::pair<int, int>(70, 70));
+		stl_map.insert(std::pair<int, int>(75, 75));
+		stl_map.insert(std::pair<int, int>(90, 90));
+		stl_map.insert(std::pair<int, int>(85, 85));
+		stl_map.insert(std::pair<int, int>(200, 200));
+		stl_map.insert(std::pair<int, int>(250, 250));
+		stl_map.insert(std::pair<int, int>(300, 300));
+		stl_map.insert(std::pair<int, int>(77, 77));
+
+		std::pair<std::map<int,int>::iterator,std::map<int,int>::iterator> stl_it = stl_map.equal_range(80);
+		std::pair<ft::map<int,int>::iterator,ft::map<int,int>::iterator> ft_it = ft_map.equal_range(80);
+
+		fs.open("./test/map_output/equal_range", std::fstream::in | std::fstream::out | std::fstream::trunc);
+		printResult(compareMapAttribues(fs, stl_map, ft_map) && equalBool((*stl_it.second).first, (*ft_it.second).first));
+		fs << "stl_value : " << (*stl_it.first).first << " " << (*stl_it.second).first << std::endl;
+		fs << "ft_value : " << (*ft_it.first).first << " " << (*ft_it.second).first << std::endl;
+		fs.close();
+	}
+
 
 	std::cout << std::endl;
 

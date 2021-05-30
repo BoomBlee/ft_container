@@ -198,6 +198,53 @@ namespace ft {
 		iter_map& operator=(const node_map<Key, T>& element) {_p = element; return *this;}
 	};
 
+	template<typename Key, typename T>
+	class reverse_iter_map
+	{
+	private:
+		typedef node_map<Key, T>*	node;
+	public:
+		node	_p;
+		reverse_iter_map() : _p(0) {};
+		reverse_iter_map(node n) : _p(n) {};
+		~reverse_iter_map() {};
+		std::pair<const Key, T>& operator*() const {return *_p->pair;}
+		std::pair<const Key, T>* operator->() const {return *_p->pair;}
+		bool operator==(const reverse_iter_map<Key, T> &obj) const {return this->_p == obj._p;}
+		bool operator!=(const reverse_iter_map<Key, T> &obj) const {return this->_p != obj._p;}
+		reverse_iter_map& operator--() {
+			if (_p->right) {
+				_p = _p->right;
+				while (_p->left) {
+					_p = _p->left;
+				}
+			}
+			else {
+				while (_p->parent && _p->parent->pair->first < _p->pair->first) {
+					_p = _p->parent;
+				}
+				_p = _p->parent;
+			}
+			return *this;
+		}
+		reverse_iter_map operator--(int) {reverse_iter_map<Key, T> tmp(*this); operator--(); return tmp;}
+		reverse_iter_map& operator++() {
+			if (_p->left) {
+				_p = _p->left;
+				while (_p->right) {
+					_p = _p->right;
+				}
+			}
+			else {
+				while (_p->parent && _p->parent->pair->first > _p->pair->first) {
+					_p = _p->parent;
+				}
+				_p = _p->parent;
+			}
+		}
+		reverse_iter_map operator++(int) {reverse_iter_map<Key, T> tmp(*this); operator++(); return tmp;}
+		reverse_iter_map& operator=(const node_map<Key, T>& element) {_p = element; return *this;}
+	};
 
 	template <typename T>
 	void	swap(T &x, T &y)
@@ -207,4 +254,99 @@ namespace ft {
 		y = tmp;
 	};
 
+	template<typename Key, typename T>
+	class const_iter_map
+	{
+	private:
+		typedef const node_map<Key, T>*	node;
+	public:
+		node	_p;
+		const_iter_map() : _p(0) {};
+		const_iter_map(node n) : _p(n) {};
+		~const_iter_map() {};
+		std::pair<const Key, T>& operator*() const {return *_p->pair;}
+		std::pair<const Key, T>* operator->() const {return *_p->pair;}
+		bool operator==(const const_iter_map<Key, T> &obj) const {return this->_p == obj._p;}
+		bool operator!=(const const_iter_map<Key, T> &obj) const {return this->_p != obj._p;}
+		const_iter_map& operator++() {
+			if (_p->right) {
+				_p = _p->right;
+				while (_p->left) {
+					_p = _p->left;
+				}
+			}
+			else {
+				while (_p->parent && _p->parent->pair->first < _p->pair->first) {
+					_p = _p->parent;
+				}
+				_p = _p->parent;
+			}
+			return *this;
+		}
+		const_iter_map operator++(int) {const_iter_map<Key, T> tmp(*this); operator++(); return tmp;}
+		const_iter_map& operator--() {
+			if (_p->left) {
+				_p = _p->left;
+				while (_p->right) {
+					_p = _p->right;
+				}
+			}
+			else {
+				while (_p->parent && _p->parent->pair->first > _p->pair->first) {
+					_p = _p->parent;
+				}
+				_p = _p->parent;
+			}
+		}
+		const_iter_map operator--(int) {const_iter_map<Key, T> tmp(*this); operator--(); return tmp;}
+		const_iter_map& operator=(const node_map<Key, T>& element) {_p = element; return *this;}
+	};
+
+	template<typename Key, typename T>
+	class const_reverse_iter_map
+	{
+	private:
+		typedef node_map<Key, T>*	node;
+	public:
+		node	_p;
+		const_reverse_iter_map() : _p(0) {};
+		const_reverse_iter_map(node n) : _p(n) {};
+		~const_reverse_iter_map() {};
+		std::pair<const Key, T>& operator*() const {return *_p->pair;}
+		std::pair<const Key, T>* operator->() const {return *_p->pair;}
+		bool operator==(const const_reverse_iter_map<Key, T> &obj) const {return this->_p == obj._p;}
+		bool operator!=(const const_reverse_iter_map<Key, T> &obj) const {return this->_p != obj._p;}
+		const_reverse_iter_map& operator++() {
+			if (_p->right) {
+				_p = _p->right;
+				while (_p->left) {
+					_p = _p->left;
+				}
+			}
+			else {
+				while (_p->parent && _p->parent->pair->first < _p->pair->first) {
+					_p = _p->parent;
+				}
+				_p = _p->parent;
+			}
+			return *this;
+		}
+		const_reverse_iter_map operator++(int) {const_reverse_iter_map<Key, T> tmp(*this); operator++(); return tmp;}
+		const_reverse_iter_map& operator--() {
+			if (_p->left) {
+				_p = _p->left;
+				while (_p->right) {
+					_p = _p->right;
+				}
+			}
+			else {
+				while (_p->parent && _p->parent->pair->first > _p->pair->first) {
+					_p = _p->parent;
+				}
+				_p = _p->parent;
+			}
+		}
+		const_reverse_iter_map operator--(int) {const_reverse_iter_map<Key, T> tmp(*this); operator--(); return tmp;}
+		const_reverse_iter_map& operator=(const node_map<Key, T>& element) {_p = element; return *this;}
+	};
 }
