@@ -181,6 +181,7 @@ namespace ft {
 		}
 		iter_map operator++(int) {iter_map<Key, T> tmp(*this); operator++(); return tmp;}
 		iter_map& operator--() {
+
 			if (_p->left) {
 				_p = _p->left;
 				while (_p->right) {
@@ -193,6 +194,7 @@ namespace ft {
 				}
 				_p = _p->parent;
 			}
+			return *this;
 		}
 		iter_map operator--(int) {iter_map<Key, T> tmp(*this); operator--(); return tmp;}
 		iter_map& operator=(const node_map<Key, T>& element) {_p = element; return *this;}
@@ -241,6 +243,7 @@ namespace ft {
 				}
 				_p = _p->parent;
 			}
+			return *this;
 		}
 		reverse_iter_map operator++(int) {reverse_iter_map<Key, T> tmp(*this); operator++(); return tmp;}
 		reverse_iter_map& operator=(const node_map<Key, T>& element) {_p = element; return *this;}
@@ -297,6 +300,7 @@ namespace ft {
 				}
 				_p = _p->parent;
 			}
+			return *this;
 		}
 		const_iter_map operator--(int) {const_iter_map<Key, T> tmp(*this); operator--(); return tmp;}
 		const_iter_map& operator=(const node_map<Key, T>& element) {_p = element; return *this;}
@@ -345,6 +349,7 @@ namespace ft {
 				}
 				_p = _p->parent;
 			}
+			return *this;
 		}
 		const_reverse_iter_map operator--(int) {const_reverse_iter_map<Key, T> tmp(*this); operator--(); return tmp;}
 		const_reverse_iter_map& operator=(const node_map<Key, T>& element) {_p = element; return *this;}

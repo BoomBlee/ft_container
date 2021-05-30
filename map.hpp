@@ -47,6 +47,7 @@ template < class Key,														// map::key_type
 			new_node->left = 0;
 			new_node->parent = parent;
 			new_node->color = IS_RED;
+			++_size;
 			return new_node;
 		}
 
@@ -657,7 +658,7 @@ template < class Key,														// map::key_type
 			node n = _search_node(k, _map);
 			if (n)
 				return n->pair->second;
-			return NULL;
+			return (_insert(_map, k, mapped_type()))->pair->second;
 		}
 
 	/* Modifiers */
@@ -668,14 +669,12 @@ template < class Key,														// map::key_type
 			if(empty()) {
 				_map = _create_node(val.first, val.second);
 				_map->color = IS_BLACK;
-				++_size;
 				return std::make_pair(iterator(_map), true);
 			}
 			else if (search != _end_node) {
 				search->pair->second = val.second;
 				return std::make_pair(it, false);
 			}
-			++_size;
 			return std::make_pair(iterator(_insert(_map, val.first, val.second)), true);
 		}
 
@@ -686,14 +685,12 @@ template < class Key,														// map::key_type
 			if(empty()) {
 				_map = _create_node(val.first, val.second);
 				_map->color = IS_BLACK;
-				++_size;
 				return iterator(_map);
 			}
 			else if (search != _end_node) {
 				search->pair->second = val.second;
 				return iterator(search);
 			}
-			++_size;
 			return iterator(_insert(_map, val.first, val.second));
 		}
 

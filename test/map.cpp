@@ -13,6 +13,60 @@ short unsigned int count_map = 0;
 short unsigned int quantity_map = 0;
 bool costil_map = false;
 
+template <typename T>
+static bool compareVectorContent(std::vector<T>& stl_vect, std::vector<T>& my_vect) {
+	typename std::vector<T>::iterator ft_it = my_vect.begin();
+	typename std::vector<T>::iterator stl_it = stl_vect.begin();
+	if (my_vect.size() != stl_vect.size())
+		return false;
+	for(typename std::vector<T>::iterator ite = stl_vect.end(); stl_it != ite; ++ft_it, ++stl_it) {
+		if (*ft_it != *stl_it)
+			return false;
+	}
+	return true;
+}
+
+template <class T>
+static bool compareVectorAttribues(std::fstream& fs, std::vector<T>& stl_vect, std::vector<T>& my_vect) {
+	fs << std::endl << "------------------------------" << std::endl;
+	fs << "STL : " << std::endl;
+	fs << "Empty		: " << stl_vect.empty() << std::endl;
+	fs << "Size		: " << stl_vect.size() << std::endl;
+	fs << "Capacity	: " << stl_vect.capacity() << std::endl;
+	fs << "Max_size	: " << stl_vect.max_size() << std::endl;
+	fs << "Content	: " << "{ ";
+
+	typename std::vector<T>::iterator stl_it = stl_vect.begin();
+	typename std::vector<T>::iterator ite = stl_vect.end();
+    while (stl_it != ite) {
+        fs << *stl_it;
+        if (++stl_it != ite)
+            fs << ", ";
+    }
+    fs << " }" << std::endl << std::endl;
+
+
+	fs << "FT : " << std::endl;
+	fs << "Empty		: " << my_vect.empty() << std::endl;
+	fs << "Size		: " << my_vect.size() << std::endl;
+	fs << "Capacity	: " << my_vect.capacity() << std::endl;
+	fs << "Max_size	: " << my_vect.max_size() << std::endl;
+	fs << "Content	: " << "{ ";
+
+    typename std::vector<T>::iterator ft_it = my_vect.begin();
+	typename std::vector<T>::iterator ft_ite = my_vect.end();
+    while(ft_it != ft_ite) {
+        fs << *ft_it;
+        if (++ft_it != ft_ite)
+            fs << ", ";
+    }
+    fs << " }" << std::endl;
+
+	fs << "------------------------------" << std::endl;
+
+	return stl_vect == my_vect;
+}
+
 template <typename Key, typename T>
 static bool compareMapContent(std::map<Key, T>& stl_map, ft::map<Key, T>& my_map) {
 	typename ft::map<Key, T>::iterator ft_it = my_map.begin();
@@ -121,8 +175,8 @@ void test_map() {
 	std::cout << YELLOW << "MAP :" << RESET <<std::endl;
 	mkdir("./test/map_output", 0777);
 
+	std::cout << "Constructor:";
 	/*DEFAULT CONSTRUCTOR*/
-	std::cout << "CONSTRUCTOR:";
 	{
 		std::map<int, int> stl_map;
 		ft::map<int, int> ft_map;
@@ -133,9 +187,19 @@ void test_map() {
 	}
 	{
 		std::map<int, int> map;
-		map.insert(std::pair<int, int>(50, 50));
-		map.insert(std::pair<int, int>(40, 40));
+		map.insert(std::pair<int, int>(50, 51));
+		map.insert(std::pair<int, int>(40, 41));
 		map.insert(std::pair<int, int>(60, 60));
+		map.insert(std::pair<int, int>(55, 55));
+		map.insert(std::pair<int, int>(80, 80));
+		map.insert(std::pair<int, int>(70, 70));
+		map.insert(std::pair<int, int>(75, 75));
+		map.insert(std::pair<int, int>(90, 90));
+		map.insert(std::pair<int, int>(85, 85));
+		map.insert(std::pair<int, int>(200, 200));
+		map.insert(std::pair<int, int>(250, 250));
+		map.insert(std::pair<int, int>(300, 300));
+		map.insert(std::pair<int, int>(77, 77));
 
 		std::map<int, int> stl_map(map.begin(), map.end());
 		ft::map<int, int> ft_map(map.begin(), map.end());
@@ -147,9 +211,19 @@ void test_map() {
 	}
 	{
 		std::map<int, int> map;
-		map.insert(std::pair<int, int>(50, 50));
-		map.insert(std::pair<int, int>(40, 40));
+		map.insert(std::pair<int, int>(50, 51));
+		map.insert(std::pair<int, int>(40, 41));
 		map.insert(std::pair<int, int>(60, 60));
+		map.insert(std::pair<int, int>(55, 55));
+		map.insert(std::pair<int, int>(80, 80));
+		map.insert(std::pair<int, int>(70, 70));
+		map.insert(std::pair<int, int>(75, 75));
+		map.insert(std::pair<int, int>(90, 90));
+		map.insert(std::pair<int, int>(85, 85));
+		map.insert(std::pair<int, int>(200, 200));
+		map.insert(std::pair<int, int>(250, 250));
+		map.insert(std::pair<int, int>(300, 300));
+		map.insert(std::pair<int, int>(77, 77));
 
 		std::map<int, int> stl_map(map.begin(), map.end());
 		ft::map<int, int> ft_map(map.begin(), map.end());
@@ -165,7 +239,116 @@ void test_map() {
 	}
 	std::cout << std::endl;
 
+	std::cout << "Itearators:";
+	{
+		std::map<int, int> map;
+		map.insert(std::pair<int, int>(50, 50));
+		map.insert(std::pair<int, int>(40, 40));
+		map.insert(std::pair<int, int>(60, 60));
 
+		std::map<int, int> stl_map(map.begin(), map.end());
+		ft::map<int, int> ft_map(map.begin(), map.end());
+
+		std::vector<int> vect_stl, vect_ft;
+
+		std::map<int, int>::iterator stl_it = stl_map.begin();
+		ft::map<int, int>::iterator ft_it = ft_map.begin();
+
+
+		for (; ft_it != ft_map.end(); ++stl_it, ++ft_it) {
+			vect_stl.push_back((*stl_it).first);
+			vect_ft.push_back((*ft_it).first);
+		}
+
+		fs.open("./test/map_output/iterator++", std::fstream::in | std::fstream::out | std::fstream::trunc);
+		printResult(compareVectorAttribues(fs, vect_stl, vect_ft));
+		fs.close();
+	}
+	{
+		std::map<int, int> map;
+		map.insert(std::pair<int, int>(50, 50));
+		map.insert(std::pair<int, int>(40, 40));
+		map.insert(std::pair<int, int>(60, 60));
+
+		std::map<int, int> stl_map(map.begin(), map.end());
+		ft::map<int, int> ft_map(map.begin(), map.end());
+
+		std::vector<int> vect_stl, vect_ft;
+
+		std::map<int, int>::reverse_iterator stl_it = stl_map.rbegin();
+		ft::map<int, int>::reverse_iterator ft_it = ft_map.rbegin();
+
+
+		for (; ft_it != ft_map.rend(); ++stl_it, ++ft_it) {
+			vect_stl.push_back((*stl_it).first);
+			vect_ft.push_back((*ft_it).first);
+		}
+
+		fs.open("./test/map_output/reverse_iterator++", std::fstream::in | std::fstream::out | std::fstream::trunc);
+		printResult(compareVectorAttribues(fs, vect_stl, vect_ft));
+		fs.close();
+	}
+	{
+		std::map<int, int> map;
+		map.insert(std::pair<int, int>(50, 50));
+		map.insert(std::pair<int, int>(40, 40));
+		map.insert(std::pair<int, int>(60, 60));
+
+		std::map<int, int> stl_map(map.begin(), map.end());
+		ft::map<int, int> ft_map(map.begin(), map.end());
+
+		std::vector<int> vect_stl, vect_ft;
+
+		std::map<int, int>::iterator stl_it = stl_map.begin();
+		ft::map<int, int>::iterator ft_it = ft_map.begin();
+
+		stl_it++;
+		ft_it++;
+
+		std::map<int, int>::iterator stl_it1 = --stl_it;
+		ft::map<int, int>::iterator ft_it1 = --ft_it;
+
+		bool one = equalBool(*stl_it1, *ft_it1);
+
+		stl_it++;
+		ft_it++;
+
+		stl_it1 = stl_it--;
+		ft_it1 = ft_it--;
+
+		bool two = equalBool(*stl_it1, *ft_it1);
+
+		fs.open("./test/map_output/iterator--", std::fstream::in | std::fstream::out | std::fstream::trunc);
+		printResult(compareVectorAttribues(fs, vect_stl, vect_ft) && one && two);
+		fs.close();
+	}
+	std::cout << std::endl;
+
+	std::cout << "Element acces:";
+	{
+		std::map<int, int> map;
+		map.insert(std::pair<int, int>(50, 51));
+		map.insert(std::pair<int, int>(40, 41));
+		map.insert(std::pair<int, int>(60, 60));
+		map.insert(std::pair<int, int>(55, 55));
+		map.insert(std::pair<int, int>(80, 80));
+		map.insert(std::pair<int, int>(70, 70));
+		map.insert(std::pair<int, int>(75, 75));
+		map.insert(std::pair<int, int>(90, 90));
+		map.insert(std::pair<int, int>(85, 85));
+		map.insert(std::pair<int, int>(200, 200));
+		map.insert(std::pair<int, int>(250, 250));
+		map.insert(std::pair<int, int>(300, 300));
+		map.insert(std::pair<int, int>(77, 77));
+
+		std::map<int, int> stl_map(map.begin(), map.end());
+		ft::map<int, int> ft_map(map.begin(), map.end());
+
+		fs.open("./test/map_output/operator[]", std::fstream::in | std::fstream::out | std::fstream::trunc);
+		printResult(equalBool(stl_map[60], ft_map[60]) && equalBool(stl_map[61], ft_map[61]) && compareMapAttribues(fs, stl_map, ft_map));
+		fs.close();
+	}
+	std::cout << std::endl;
 
 	std::cout << "Modifiers:";
 	/*INSERT*/
